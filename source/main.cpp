@@ -101,7 +101,7 @@ int main(int argc, char *argv[]) {
     initializeStructs(&emc, &mc);
 
     while (true) {
-        FILE* f = fopen(FLAG_FILE, "r");
+        FILE *f = fopen(FLAG_FILE, "r");
         if (f) {
             fclose(f);
 
@@ -116,3 +116,4 @@ int main(int argc, char *argv[]) {
 
     return 0;
 }
+
