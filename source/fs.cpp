@@ -2,7 +2,7 @@
 #include "register_table.hpp"
 
 void ensureDirectoriesExist() {
-    FsFileSystem* sdmc = fsdevGetDeviceFileSystem("sdmc");
+    FsFileSystem *sdmc = fsdevGetDeviceFileSystem("sdmc");
     if (sdmc) {
         fsFsCreateDirectory(sdmc, "/config");
         fsFsCreateDirectory(sdmc, "/config/emc_dumper");
@@ -18,3 +18,4 @@ void writeDump(DumpTask *task) {
         fclose(txtfile);
     }
 }
+
