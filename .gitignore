@@ -1,0 +1,7 @@
+/sysmodule/build/
+/sysmodule/*.elf
+/sysmodule/*.nsp
+/sysmodule/*.npdm
+/overlay/build/
+/overlay/*.nacp
+/overlay/*.ovl
