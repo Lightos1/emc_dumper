@@ -25,16 +25,8 @@ namespace dumper::sys {
         u64 processIDList[80]{};
         s32 processCount    = 0;
         Handle handle       = INVALID_HANDLE;
-        struct {
-            u64 eventType;
-            u64 threadID;
-            u64 moduleID;
-            u64 f_0x18;
-            u64 f_0x20;
-            u64 f_0x28;
-            u64 f_0x30;
-            u64 f_0x38;
-        } debugEvent{};
+
+        DebugEventInfo debugEvent{};
 
         /* Get all running processes. */
         Result resultGetProcessList = svcGetProcessList(&processCount, processIDList, std::size(processIDList));
@@ -44,7 +36,6 @@ namespace dumper::sys {
 
         /* Try to find target id. */
         for (int i = 0; i < processCount; ++i) {
-            /* Ensure the handle is initially invalid. */
             if (handle != INVALID_HANDLE) {
                 svcCloseHandle(handle);
                 handle = INVALID_HANDLE;
@@ -58,9 +49,10 @@ namespace dumper::sys {
 
             /* Try to get a debug event. */
             Result resultDebugEvent = svcGetDebugEvent(&debugEvent, handle);
-
-            if (R_SUCCEEDED(resultDebugEvent) && debugEvent.moduleID == id) {
-                return handle;
+            if (R_SUCCEEDED(resultDebugEvent)) {
+                if (debugEvent.info.create_process.program_id == id) {
+                    return handle;
+                }
             }
         }
 
@@ -68,53 +60,51 @@ namespace dumper::sys {
         return INVALID_HANDLE;
     }
 
-    /* Todo, figure out what I broke, this used to work. =) */
-    void readMemory(Handle handle, MemoryInfo &memoryInfo) {
-        fs::log("Read memory");
-        fs::log("MemoryInfo size: %d", memoryInfo.size);
-        constexpr size_t PageSize = 0x1000;
-        std::string filename = std::string(fs::ConfigPath) + "pcv_" + fs::makeUniqueSuffix() + ".bin";
-        fs::log(filename.c_str());
-
-        u8 buffer[PageSize];
-        for (u64 base = 0; base < memoryInfo.size; base += PageSize) {
-            const size_t pageSize = std::min(memoryInfo.size - base, static_cast<u64>(PageSize));
-            Result resultReadMemory = svcReadDebugProcessMemory(buffer, handle, memoryInfo.addr + base, pageSize);
-
-            if (R_FAILED(resultReadMemory)) {
-                break;
-            }
-
-            fs::writeBinDump(buffer, sizeof(buffer), filename);
-        }
-    }
-
     void dumpSysmodule(u64 id) {
-        fs::log("Getting handle");
         Handle handle = getHandle(id);
         if (handle == INVALID_HANDLE) {
-            fs::log("Invalid handle");
+            fs::log("[Invalid handle!");
             return;
         }
 
         MemoryInfo memoryInfo = {};
         u64 address = 0;
         u32 pageInfo = 0;
+        constexpr u32 PageSize = 0x1000;
+        u8 buffer[PageSize];
 
+        /* Loop until failure. */
         while (true) {
-            Result res = svcQueryDebugProcessMemory(&memoryInfo, &pageInfo, handle, address);
-            fs::log("Query memory");
+            /* Find heap. */
+            while (true) {
+                Result resultProcessMemory = svcQueryDebugProcessMemory(&memoryInfo, &pageInfo, handle, address);
+                address = memoryInfo.addr + memoryInfo.size;
 
-            if (R_FAILED(res) || !memoryInfo.size) {
-                break;
+                if (R_FAILED(resultProcessMemory) || !address) {
+                    svcCloseHandle(handle);
+                    handle = INVALID_HANDLE;
+                    goto cleanup;
+                }
+
+                if (memoryInfo.size && (memoryInfo.perm & 3) == 3 && static_cast<char>(memoryInfo.type) == 0x04) {
+                    break;
+                }
             }
 
-            readMemory(handle, memoryInfo);
-            address = memoryInfo.addr + memoryInfo.size;
-            svcCloseHandle(handle);
+            for (u64 base = 0; base < memoryInfo.size; base += PageSize) {
+                u32 memorySize = std::min(memoryInfo.size, static_cast<u64>(PageSize));
+                if (R_FAILED(svcReadDebugProcessMemory(buffer, handle, base + memoryInfo.addr, memorySize))) {
+                    break;
+                }
+
+                fs::writeBinDump(buffer, sizeof(buffer), "pcv_heap.bin");
+            }
         }
 
+        cleanup:
         svcCloseHandle(handle);
+        handle = INVALID_HANDLE;
+        return;
     }
 
 }

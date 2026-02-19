@@ -67,11 +67,9 @@ namespace dumper::fs {
     }
 
     void writeBinDump(u8 *data, size_t dataSize, std::string name) {
-        log("Creating file");
         FILE *file = fopen((std::string(ConfigPath) + name).c_str(), "ab");
         if (file) {
             fwrite(data, 1, dataSize, file);
-            log("Writing to file");
             fclose(file);
         }
     }
