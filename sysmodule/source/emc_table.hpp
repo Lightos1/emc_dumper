@@ -19,533 +19,1045 @@
 
 namespace dumper::reg {
 
+    constexpr u32 EMC_INTSTATUS                             = 0x000;
+    constexpr u32 EMC_DBG                                   = 0x008;
+    constexpr u32 EMC_CFG                                   = 0x00C;
+    constexpr u32 EMC_ADR_CFG                               = 0x010;
+    constexpr u32 EMC_REFCTRL                               = 0x020;
+    constexpr u32 EMC_PIN                                   = 0x024;
+    constexpr u32 EMC_TIMING_CONTROL                        = 0x028;
+    constexpr u32 EMC_RC                                    = 0x02C;
+    constexpr u32 EMC_RFC                                   = 0x030;
+    constexpr u32 EMC_RAS                                   = 0x034;
+    constexpr u32 EMC_RP                                    = 0x038;
+    constexpr u32 EMC_R2W                                   = 0x03C;
+    constexpr u32 EMC_W2R                                   = 0x040;
+    constexpr u32 EMC_R2P                                   = 0x044;
+    constexpr u32 EMC_W2P                                   = 0x048;
+    constexpr u32 EMC_RD_RCD                                = 0x04C;
+    constexpr u32 EMC_WR_RCD                                = 0x050;
+    constexpr u32 EMC_RRD                                   = 0x054;
+    constexpr u32 EMC_REXT                                  = 0x058;
+    constexpr u32 EMC_WDV                                   = 0x05C;
+    constexpr u32 EMC_QUSE                                  = 0x060;
+    constexpr u32 EMC_QRST                                  = 0x064;
+    constexpr u32 EMC_QSAFE                                 = 0x068;
+    constexpr u32 EMC_RDV                                   = 0x06C;
+    constexpr u32 EMC_REFRESH                               = 0x070;
+    constexpr u32 EMC_BURST_REFRESH_NUM                     = 0x074;
+    constexpr u32 EMC_PDEX2WR                               = 0x078;
+    constexpr u32 EMC_PDEX2RD                               = 0x07C;
+    constexpr u32 EMC_PCHG2PDEN                             = 0x080;
+    constexpr u32 EMC_ACT2PDEN                              = 0x084;
+    constexpr u32 EMC_AR2PDEN                               = 0x088;
+    constexpr u32 EMC_RW2PDEN                               = 0x08C;
+    constexpr u32 EMC_TXSR                                  = 0x090;
+    constexpr u32 EMC_TCKE                                  = 0x094;
+    constexpr u32 EMC_TFAW                                  = 0x098;
+    constexpr u32 EMC_TRPAB                                 = 0x09C;
+    constexpr u32 EMC_TCLKSTABLE                            = 0x0A0;
+    constexpr u32 EMC_TCLKSTOP                              = 0x0A4;
+    constexpr u32 EMC_TREFBW                                = 0x0A8;
+    constexpr u32 EMC_TPPD                                  = 0x0AC;
+    constexpr u32 EMC_ODT_WRITE                             = 0x0B0;
+    constexpr u32 EMC_PDEX2MRR                              = 0x0B4;
+    constexpr u32 EMC_WEXT                                  = 0x0B8;
+    constexpr u32 EMC_TRTM                                  = 0x0BC;
+    constexpr u32 EMC_RFC_SLR                               = 0x0C0;
+    constexpr u32 EMC_MRS_WAIT_CNT2                         = 0x0C4;
+    constexpr u32 EMC_MRS_WAIT_CNT                          = 0x0C8;
+    constexpr u32 EMC_MRS                                   = 0x0CC;
+    constexpr u32 EMC_EMRS                                  = 0x0D0;
+    constexpr u32 EMC_REF                                   = 0x0D4;
+    constexpr u32 EMC_NOP                                   = 0x0DC;
+    constexpr u32 EMC_SELF_REF                              = 0x0E0;
+    constexpr u32 EMC_MRW                                   = 0x0E8;
+    constexpr u32 EMC_MRR                                   = 0x0EC;
+    constexpr u32 EMC_CMDQ                                  = 0x0F0;
+    constexpr u32 EMC_MC2EMCQ                               = 0x0F4;
+    constexpr u32 EMC_TWTM                                  = 0x0F8;
+    constexpr u32 EMC_TRATM                                 = 0x0FC;
+    constexpr u32 EMC_FBIO_SPARE                            = 0x100;
+    constexpr u32 EMC_FBIO_CFG5                             = 0x104;
+    constexpr u32 EMC_TWATM                                 = 0x108;
+    constexpr u32 EMC_TR2REF                                = 0x10C;
+    constexpr u32 EMC_PMACRO_DATA_PI_CTRL                   = 0x110;
+    constexpr u32 EMC_PMACRO_CMD_PI_CTRL                    = 0x114;
+    constexpr u32 EMC_PDEX2CKE                              = 0x118;
+    constexpr u32 EMC_CKE2PDEN                              = 0x11C;
+    constexpr u32 EMC_CFG_RSV                               = 0x120;
+    constexpr u32 EMC_ACPD_CONTROL                          = 0x124;
+    constexpr u32 EMC_MPC                                   = 0x128;
+    constexpr u32 EMC_EMRS2                                 = 0x12C;
+    constexpr u32 EMC_MRW2                                  = 0x134;
+    constexpr u32 EMC_MRW3                                  = 0x138;
+    constexpr u32 EMC_MRW4                                  = 0x13C;
+    constexpr u32 EMC_CLKEN_OVERRIDE                        = 0x140;
+    constexpr u32 EMC_R2R                                   = 0x144;
+    constexpr u32 EMC_W2W                                   = 0x148;
+    constexpr u32 EMC_EINPUT                                = 0x14C;
+    constexpr u32 EMC_EINPUT_DURATION                       = 0x150;
+    constexpr u32 EMC_PUTERM_EXTRA                          = 0x154;
+    constexpr u32 EMC_TCKESR                                = 0x158;
+    constexpr u32 EMC_TPD                                   = 0x15C;
+    constexpr u32 EMC_AUTO_CAL_CONFIG                       = 0x2A4;
+    constexpr u32 EMC_AUTO_CAL_INTERVAL                     = 0x2A8;
+    constexpr u32 EMC_REQ_CTRL                              = 0x2B0;
+    constexpr u32 EMC_EMC_STATUS                            = 0x2B4;
+    constexpr u32 EMC_CFG_2                                 = 0x2B8;
+    constexpr u32 EMC_CFG_DIG_DLL                           = 0x2BC;
+    constexpr u32 EMC_CFG_DIG_DLL_PERIOD                    = 0x2C0;
+    constexpr u32 EMC_DIG_DLL_STATUS                        = 0x2C4;
+    constexpr u32 EMC_CFG_DIG_DLL_1                         = 0x2C8;
+    constexpr u32 EMC_RDV_MASK                              = 0x2CC;
+    constexpr u32 EMC_WDV_MASK                              = 0x2D0;
+    constexpr u32 EMC_RDV_EARLY_MASK                        = 0x2D4;
+    constexpr u32 EMC_RDV_EARLY                             = 0x2D8;
+    constexpr u32 EMC_AUTO_CAL_CONFIG8                      = 0x2DC;
+    constexpr u32 EMC_ZCAL_INTERVAL                         = 0x2E0;
+    constexpr u32 EMC_ZCAL_WAIT_CNT                         = 0x2E4;
+    constexpr u32 EMC_ZCAL_MRW_CMD                          = 0x2E8;
+    constexpr u32 EMC_ZQ_CAL                                = 0x2EC;
+    constexpr u32 EMC_XM2COMPPADCTRL3                       = 0x2F4;
+    constexpr u32 EMC_AUTO_CAL_VREF_SEL_0                   = 0x2F8;
+    constexpr u32 EMC_AUTO_CAL_VREF_SEL_1                   = 0x300;
+    constexpr u32 EMC_XM2COMPPADCTRL                        = 0x30C;
+    constexpr u32 EMC_FDPD_CTRL_DQ                          = 0x310;
+    constexpr u32 EMC_FDPD_CTRL_CMD                         = 0x314;
+    constexpr u32 EMC_PMACRO_CMD_BRICK_CTRL_FDPD            = 0x318;
+    constexpr u32 EMC_PMACRO_DATA_BRICK_CTRL_FDPD           = 0x31C;
+    constexpr u32 EMC_SCRATCH0                              = 0x324;
+    constexpr u32 EMC_PMACRO_BRICK_CTRL_RFU1                = 0x330;
+    constexpr u32 EMC_PMACRO_BRICK_CTRL_RFU2                = 0x334;
+    constexpr u32 EMC_CMD_MAPPING_CMD0_0                    = 0x380;
+    constexpr u32 EMC_CMD_MAPPING_CMD0_1                    = 0x384;
+    constexpr u32 EMC_CMD_MAPPING_CMD0_2                    = 0x388;
+    constexpr u32 EMC_CMD_MAPPING_CMD1_0                    = 0x38C;
+    constexpr u32 EMC_CMD_MAPPING_CMD1_1                    = 0x390;
+    constexpr u32 EMC_CMD_MAPPING_CMD1_2                    = 0x394;
+    constexpr u32 EMC_CMD_MAPPING_CMD2_0                    = 0x398;
+    constexpr u32 EMC_CMD_MAPPING_CMD2_1                    = 0x39C;
+    constexpr u32 EMC_CMD_MAPPING_CMD2_2                    = 0x3A0;
+    constexpr u32 EMC_CMD_MAPPING_CMD3_0                    = 0x3A4;
+    constexpr u32 EMC_CMD_MAPPING_CMD3_1                    = 0x3A8;
+    constexpr u32 EMC_CMD_MAPPING_CMD3_2                    = 0x3AC;
+    constexpr u32 EMC_CMD_MAPPING_BYTE                      = 0x3B0;
+    constexpr u32 EMC_TR_TIMING_0                           = 0x3B4;
+    constexpr u32 EMC_TR_CTRL_0                             = 0x3B8;
+    constexpr u32 EMC_TR_CTRL_1                             = 0x3BC;
+    constexpr u32 EMC_SWITCH_BACK_CTRL                      = 0x3C0;
+    constexpr u32 EMC_TR_RDV                                = 0x3C4;
+    constexpr u32 EMC_STALL_THEN_EXE_AFTER_CLKCHANGE        = 0x3CC;
+    constexpr u32 EMC_SEL_DPD_CTRL                          = 0x3D8;
+    constexpr u32 EMC_PRE_REFRESH_REQ_CNT                   = 0x3DC;
+    constexpr u32 EMC_DYN_SELF_REF_CONTROL                  = 0x3E0;
+    constexpr u32 EMC_TXSRDLL                               = 0x3E4;
+    constexpr u32 EMC_CCFIFO_ADDR                           = 0x3E8;
+    constexpr u32 EMC_CCFIFO_DATA                           = 0x3EC;
+    constexpr u32 EMC_CCFIFO_STATUS                         = 0x3F0;
+    constexpr u32 EMC_TR_QPOP                               = 0x3F4;
+    constexpr u32 EMC_TR_RDV_MASK                           = 0x3F8;
+    constexpr u32 EMC_TR_QSAFE                              = 0x3FC;
+    constexpr u32 EMC_TR_QRST                               = 0x400;
+    constexpr u32 EMC_SWIZZLE_RANK0_BYTE0                   = 0x404;
+    constexpr u32 EMC_SWIZZLE_RANK0_BYTE1                   = 0x408;
+    constexpr u32 EMC_SWIZZLE_RANK0_BYTE2                   = 0x40C;
+    constexpr u32 EMC_SWIZZLE_RANK0_BYTE3                   = 0x410;
+    constexpr u32 EMC_SWIZZLE_RANK1_BYTE0                   = 0x418;
+    constexpr u32 EMC_SWIZZLE_RANK1_BYTE1                   = 0x41C;
+    constexpr u32 EMC_SWIZZLE_RANK1_BYTE2                   = 0x420;
+    constexpr u32 EMC_SWIZZLE_RANK1_BYTE3                   = 0x424;
+    constexpr u32 EMC_ISSUE_QRST                            = 0x428;
+    constexpr u32 EMC_AUTO_CAL_CONFIG9                      = 0x42C;
+    constexpr u32 EMC_PMC_SCRATCH1                          = 0x440;
+    constexpr u32 EMC_PMC_SCRATCH2                          = 0x444;
+    constexpr u32 EMC_PMC_SCRATCH3                          = 0x448;
+    constexpr u32 EMC_AUTO_CAL_CONFIG2                      = 0x458;
+    constexpr u32 EMC_AUTO_CAL_CONFIG3                      = 0x45C;
+    constexpr u32 EMC_TR_DVFS                               = 0x460;
+    constexpr u32 EMC_AUTO_CAL_CHANNEL                      = 0x464;
+    constexpr u32 EMC_IBDLY                                 = 0x468;
+    constexpr u32 EMC_OBDLY                                 = 0x46C;
+    constexpr u32 EMC_TXDSRVTTGEN                           = 0x480;
+    constexpr u32 EMC_WE_DURATION                           = 0x48C;
+    constexpr u32 EMC_WS_DURATION                           = 0x490;
+    constexpr u32 EMC_WEV                                   = 0x494;
+    constexpr u32 EMC_WSV                                   = 0x498;
+    constexpr u32 EMC_CFG_3                                 = 0x49C;
+    constexpr u32 EMC_MRW5                                  = 0x4A0;
+    constexpr u32 EMC_MRW6                                  = 0x4A4;
+    constexpr u32 EMC_MRW7                                  = 0x4A8;
+    constexpr u32 EMC_MRW8                                  = 0x4AC;
+    constexpr u32 EMC_MRW9                                  = 0x4B0;
+    constexpr u32 EMC_MRW10                                 = 0x4B4;
+    constexpr u32 EMC_MRW11                                 = 0x4B8;
+    constexpr u32 EMC_MRW12                                 = 0x4BC;
+    constexpr u32 EMC_MRW13                                 = 0x4C0;
+    constexpr u32 EMC_MRW14                                 = 0x4C4;
+    constexpr u32 EMC_MRW15                                 = 0x4D0;
+    constexpr u32 EMC_CFG_SYNC                              = 0x4D4;
+    constexpr u32 EMC_FDPD_CTRL_CMD_NO_RAMP                 = 0x4D8;
+    constexpr u32 EMC_WDV_CHK                               = 0x4E0;
+    constexpr u32 EMC_CFG_PIPE_2                            = 0x554;
+    constexpr u32 EMC_CFG_PIPE_CLK                          = 0x558;
+    constexpr u32 EMC_CFG_PIPE_1                            = 0x55C;
+    constexpr u32 EMC_CFG_PIPE                              = 0x560;
+    constexpr u32 EMC_QPOP                                  = 0x564;
+    constexpr u32 EMC_QUSE_WIDTH                            = 0x568;
+    constexpr u32 EMC_PUTERM_WIDTH                          = 0x56C;
+    constexpr u32 EMC_AUTO_CAL_CONFIG7                      = 0x574;
+    constexpr u32 EMC_XM2COMPPADCTRL2                       = 0x578;
+    constexpr u32 EMC_REFCTRL2                              = 0x580;
+    constexpr u32 EMC_FBIO_CFG7                             = 0x584;
+    constexpr u32 EMC_DATA_BRLSHFT_0                        = 0x588;
+    constexpr u32 EMC_DATA_BRLSHFT_1                        = 0x58C;
+    constexpr u32 EMC_RFCPB                                 = 0x590;
+    constexpr u32 EMC_DQS_BRLSHFT_0                         = 0x594;
+    constexpr u32 EMC_DQS_BRLSHFT_1                         = 0x598;
+    constexpr u32 EMC_CMD_BRLSHFT_0                         = 0x59C;
+    constexpr u32 EMC_CMD_BRLSHFT_1                         = 0x5A0;
+    constexpr u32 EMC_CMD_BRLSHFT_2                         = 0x5A4;
+    constexpr u32 EMC_CMD_BRLSHFT_3                         = 0x5A8;
+    constexpr u32 EMC_QUSE_BRLSHFT_0                        = 0x5AC;
+    constexpr u32 EMC_AUTO_CAL_CONFIG4                      = 0x5B0;
+    constexpr u32 EMC_AUTO_CAL_CONFIG5                      = 0x5B4;
+    constexpr u32 EMC_QUSE_BRLSHFT_1                        = 0x5B8;
+    constexpr u32 EMC_QUSE_BRLSHFT_2                        = 0x5BC;
+    constexpr u32 EMC_CCDMW                                 = 0x5C0;
+    constexpr u32 EMC_QUSE_BRLSHFT_3                        = 0x5C4;
+    constexpr u32 EMC_FBIO_CFG8                             = 0x5C8;
+    constexpr u32 EMC_AUTO_CAL_CONFIG6                      = 0x5CC;
+    constexpr u32 EMC_PMACRO_DLL_CFG_0                      = 0x5E4;
+    constexpr u32 EMC_PMACRO_DLL_CFG_1                      = 0x5E8;
+    constexpr u32 EMC_PMACRO_DLL_CFG_2                      = 0x5F8;
+    constexpr u32 EMC_CONFIG_SAMPLE_DELAY                   = 0x5F0;
+    constexpr u32 EMC_CFG_UPDATE                            = 0x5F4;
+    constexpr u32 EMC_PMACRO_QUSE_DDLL_RANK0_0              = 0x600;
+    constexpr u32 EMC_PMACRO_QUSE_DDLL_RANK0_1              = 0x604;
+    constexpr u32 EMC_PMACRO_QUSE_DDLL_RANK0_2              = 0x608;
+    constexpr u32 EMC_PMACRO_QUSE_DDLL_RANK0_3              = 0x60C;
+    constexpr u32 EMC_PMACRO_QUSE_DDLL_RANK0_4              = 0x610;
+    constexpr u32 EMC_PMACRO_QUSE_DDLL_RANK0_5              = 0x614;
+    constexpr u32 EMC_PMACRO_QUSE_DDLL_RANK1_4              = 0x630;
+    constexpr u32 EMC_PMACRO_QUSE_DDLL_RANK1_5              = 0x634;
+    constexpr u32 EMC_PMACRO_QUSE_DDLL_RANK1_0              = 0x620;
+    constexpr u32 EMC_PMACRO_QUSE_DDLL_RANK1_1              = 0x624;
+    constexpr u32 EMC_PMACRO_QUSE_DDLL_RANK1_2              = 0x628;
+    constexpr u32 EMC_PMACRO_QUSE_DDLL_RANK1_3              = 0x62C;
+    constexpr u32 EMC_PMACRO_OB_DDLL_LONG_DQ_RANK0_0        = 0x640;
+    constexpr u32 EMC_PMACRO_OB_DDLL_LONG_DQ_RANK0_1        = 0x644;
+    constexpr u32 EMC_PMACRO_OB_DDLL_LONG_DQ_RANK0_2        = 0x648;
+    constexpr u32 EMC_PMACRO_OB_DDLL_LONG_DQ_RANK0_3        = 0x64C;
+    constexpr u32 EMC_PMACRO_OB_DDLL_LONG_DQ_RANK0_4        = 0x650;
+    constexpr u32 EMC_PMACRO_OB_DDLL_LONG_DQ_RANK0_5        = 0x654;
+    constexpr u32 EMC_PMACRO_OB_DDLL_LONG_DQ_RANK1_0        = 0x660;
+    constexpr u32 EMC_PMACRO_OB_DDLL_LONG_DQ_RANK1_1        = 0x664;
+    constexpr u32 EMC_PMACRO_OB_DDLL_LONG_DQ_RANK1_2        = 0x668;
+    constexpr u32 EMC_PMACRO_OB_DDLL_LONG_DQ_RANK1_3        = 0x66C;
+    constexpr u32 EMC_PMACRO_OB_DDLL_LONG_DQ_RANK1_4        = 0x670;
+    constexpr u32 EMC_PMACRO_OB_DDLL_LONG_DQ_RANK1_5        = 0x674;
+    constexpr u32 EMC_PMACRO_OB_DDLL_LONG_DQS_RANK0_0       = 0x680;
+    constexpr u32 EMC_PMACRO_OB_DDLL_LONG_DQS_RANK0_1       = 0x684;
+    constexpr u32 EMC_PMACRO_OB_DDLL_LONG_DQS_RANK0_2       = 0x688;
+    constexpr u32 EMC_PMACRO_OB_DDLL_LONG_DQS_RANK0_3       = 0x68C;
+    constexpr u32 EMC_PMACRO_OB_DDLL_LONG_DQS_RANK0_4       = 0x690;
+    constexpr u32 EMC_PMACRO_OB_DDLL_LONG_DQS_RANK0_5       = 0x694;
+    constexpr u32 EMC_PMACRO_OB_DDLL_LONG_DQS_RANK1_0       = 0x6A0;
+    constexpr u32 EMC_PMACRO_OB_DDLL_LONG_DQS_RANK1_1       = 0x6A4;
+    constexpr u32 EMC_PMACRO_OB_DDLL_LONG_DQS_RANK1_2       = 0x6A8;
+    constexpr u32 EMC_PMACRO_OB_DDLL_LONG_DQS_RANK1_3       = 0x6AC;
+    constexpr u32 EMC_PMACRO_OB_DDLL_LONG_DQS_RANK1_4       = 0x6B0;
+    constexpr u32 EMC_PMACRO_OB_DDLL_LONG_DQS_RANK1_5       = 0x6B4;
+    constexpr u32 EMC_PMACRO_IB_DDLL_LONG_DQS_RANK0_0       = 0x6C0;
+    constexpr u32 EMC_PMACRO_IB_DDLL_LONG_DQS_RANK0_1       = 0x6C4;
+    constexpr u32 EMC_PMACRO_IB_DDLL_LONG_DQS_RANK0_2       = 0x6C8;
+    constexpr u32 EMC_PMACRO_IB_DDLL_LONG_DQS_RANK0_3       = 0x6CC;
+    constexpr u32 EMC_PMACRO_IB_DDLL_LONG_DQS_RANK1_0       = 0x6E0;
+    constexpr u32 EMC_PMACRO_IB_DDLL_LONG_DQS_RANK1_1       = 0x6E4;
+    constexpr u32 EMC_PMACRO_IB_DDLL_LONG_DQS_RANK1_2       = 0x6E8;
+    constexpr u32 EMC_PMACRO_IB_DDLL_LONG_DQS_RANK1_3       = 0x6EC;
+    constexpr u32 EMC_PMACRO_AUTOCAL_CFG_0                  = 0x700;
+    constexpr u32 EMC_PMACRO_AUTOCAL_CFG_1                  = 0x704;
+    constexpr u32 EMC_PMACRO_AUTOCAL_CFG_2                  = 0x708;
+    constexpr u32 EMC_PMACRO_TX_PWRD_0                      = 0x720;
+    constexpr u32 EMC_PMACRO_TX_PWRD_1                      = 0x724;
+    constexpr u32 EMC_PMACRO_TX_PWRD_2                      = 0x728;
+    constexpr u32 EMC_PMACRO_TX_PWRD_3                      = 0x72C;
+    constexpr u32 EMC_PMACRO_TX_PWRD_4                      = 0x730;
+    constexpr u32 EMC_PMACRO_TX_PWRD_5                      = 0x734;
+    constexpr u32 EMC_PMACRO_TX_SEL_CLK_SRC_0               = 0x740;
+    constexpr u32 EMC_PMACRO_TX_SEL_CLK_SRC_1               = 0x744;
+    constexpr u32 EMC_PMACRO_TX_SEL_CLK_SRC_3               = 0x74C;
+    constexpr u32 EMC_PMACRO_TX_SEL_CLK_SRC_2               = 0x748;
+    constexpr u32 EMC_PMACRO_TX_SEL_CLK_SRC_4               = 0x750;
+    constexpr u32 EMC_PMACRO_TX_SEL_CLK_SRC_5               = 0x754;
+    constexpr u32 EMC_PMACRO_DDLL_BYPASS                    = 0x760;
+    constexpr u32 EMC_PMACRO_DDLL_PWRD_0                    = 0x770;
+    constexpr u32 EMC_PMACRO_DDLL_PWRD_1                    = 0x774;
+    constexpr u32 EMC_PMACRO_DDLL_PWRD_2                    = 0x778;
+    constexpr u32 EMC_PMACRO_CMD_CTRL_0                     = 0x780;
+    constexpr u32 EMC_PMACRO_CMD_CTRL_1                     = 0x784;
+    constexpr u32 EMC_PMACRO_CMD_CTRL_2                     = 0x788;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE0_0 = 0x800;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE0_1 = 0x804;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE0_2 = 0x808;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE0_3 = 0x80C;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE1_0 = 0x810;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE1_1 = 0x814;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE1_2 = 0x818;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE1_3 = 0x81C;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE2_0 = 0x820;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE2_1 = 0x824;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE2_2 = 0x828;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE2_3 = 0x82C;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE3_0 = 0x830;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE3_1 = 0x834;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE3_2 = 0x838;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE3_3 = 0x83C;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE4_0 = 0x840;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE4_1 = 0x844;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE4_2 = 0x848;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE4_3 = 0x84C;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE5_0 = 0x850;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE5_1 = 0x854;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE5_2 = 0x858;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE5_3 = 0x85C;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE6_0 = 0x860;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE6_1 = 0x864;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE6_2 = 0x868;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE6_3 = 0x86C;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE7_0 = 0x870;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE7_1 = 0x874;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE7_2 = 0x878;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE7_3 = 0x87C;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD0_0  = 0x880;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD0_1  = 0x884;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD0_2  = 0x888;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD0_3  = 0x88C;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD1_0  = 0x890;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD1_1  = 0x894;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD1_2  = 0x898;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD1_3  = 0x89C;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD2_0  = 0x8A0;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD2_1  = 0x8A4;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD2_2  = 0x8A8;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD2_3  = 0x8AC;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD3_0  = 0x8B0;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD3_1  = 0x8B4;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD3_2  = 0x8B8;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD3_3  = 0x8BC;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE0_0 = 0x900;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE0_1 = 0x904;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE0_2 = 0x908;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE0_3 = 0x90C;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE1_0 = 0x910;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE1_1 = 0x914;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE1_2 = 0x918;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE1_3 = 0x91C;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE2_0 = 0x920;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE2_1 = 0x924;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE2_2 = 0x928;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE2_3 = 0x92C;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE3_0 = 0x930;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE3_1 = 0x934;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE3_2 = 0x938;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE3_3 = 0x93C;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE4_0 = 0x940;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE4_1 = 0x944;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE4_2 = 0x948;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE4_3 = 0x94C;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE5_0 = 0x950;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE5_1 = 0x954;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE5_2 = 0x958;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE5_3 = 0x95C;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE6_0 = 0x960;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE6_1 = 0x964;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE6_2 = 0x968;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE6_3 = 0x96C;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE7_0 = 0x970;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE7_1 = 0x974;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE7_2 = 0x978;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE7_3 = 0x97C;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD0_0  = 0x980;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD0_1  = 0x984;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD0_2  = 0x988;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD0_3  = 0x98C;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD1_0  = 0x990;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD1_1  = 0x994;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD1_2  = 0x998;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD1_3  = 0x99C;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD2_0  = 0x9A0;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD2_1  = 0x9A4;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD2_2  = 0x9A8;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD2_3  = 0x9AC;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD3_0  = 0x9B0;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD3_1  = 0x9B4;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD3_2  = 0x9B8;
+    constexpr u32 EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD3_3  = 0x9BC;
+    constexpr u32 EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE0_0 = 0xA00;
+    constexpr u32 EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE0_1 = 0xA04;
+    constexpr u32 EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE0_2 = 0xA08;
+    constexpr u32 EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE1_0 = 0xA10;
+    constexpr u32 EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE1_1 = 0xA14;
+    constexpr u32 EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE1_2 = 0xA18;
+    constexpr u32 EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE2_0 = 0xA20;
+    constexpr u32 EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE2_1 = 0xA24;
+    constexpr u32 EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE2_2 = 0xA28;
+    constexpr u32 EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE3_0 = 0xA30;
+    constexpr u32 EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE3_1 = 0xA34;
+    constexpr u32 EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE3_2 = 0xA38;
+    constexpr u32 EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE4_0 = 0xA40;
+    constexpr u32 EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE4_1 = 0xA44;
+    constexpr u32 EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE4_2 = 0xA48;
+    constexpr u32 EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE5_0 = 0xA50;
+    constexpr u32 EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE5_1 = 0xA54;
+    constexpr u32 EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE5_2 = 0xA58;
+    constexpr u32 EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE6_0 = 0xA60;
+    constexpr u32 EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE6_1 = 0xA64;
+    constexpr u32 EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE6_2 = 0xA68;
+    constexpr u32 EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE7_0 = 0xA70;
+    constexpr u32 EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE7_1 = 0xA74;
+    constexpr u32 EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE7_2 = 0xA78;
+    constexpr u32 EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE0_0 = 0xB00;
+    constexpr u32 EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE0_1 = 0xB04;
+    constexpr u32 EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE0_2 = 0xB08;
+    constexpr u32 EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE1_0 = 0xB10;
+    constexpr u32 EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE1_1 = 0xB14;
+    constexpr u32 EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE1_2 = 0xB18;
+    constexpr u32 EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE2_0 = 0xB20;
+    constexpr u32 EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE2_1 = 0xB24;
+    constexpr u32 EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE2_2 = 0xB28;
+    constexpr u32 EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE3_0 = 0xB30;
+    constexpr u32 EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE3_1 = 0xB34;
+    constexpr u32 EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE3_2 = 0xB38;
+    constexpr u32 EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE4_0 = 0xB40;
+    constexpr u32 EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE4_1 = 0xB44;
+    constexpr u32 EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE4_2 = 0xB48;
+    constexpr u32 EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE5_0 = 0xB50;
+    constexpr u32 EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE5_1 = 0xB54;
+    constexpr u32 EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE5_2 = 0xB58;
+    constexpr u32 EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE6_0 = 0xB60;
+    constexpr u32 EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE6_1 = 0xB64;
+    constexpr u32 EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE6_2 = 0xB68;
+    constexpr u32 EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE7_0 = 0xB70;
+    constexpr u32 EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE7_1 = 0xB74;
+    constexpr u32 EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE7_2 = 0xB78;
+    constexpr u32 EMC_PMACRO_IB_VREF_DQ_0                   = 0xBE0;
+    constexpr u32 EMC_PMACRO_IB_VREF_DQ_1                   = 0xBE4;
+    constexpr u32 EMC_PMACRO_IB_VREF_DQS_0                  = 0xBF0;
+    constexpr u32 EMC_PMACRO_IB_VREF_DQS_1                  = 0xBF4;
+    constexpr u32 EMC_PMACRO_DDLL_LONG_CMD_0                = 0xC00;
+    constexpr u32 EMC_PMACRO_DDLL_LONG_CMD_1                = 0xC04;
+    constexpr u32 EMC_PMACRO_DDLL_LONG_CMD_2                = 0xC08;
+    constexpr u32 EMC_PMACRO_DDLL_LONG_CMD_3                = 0xC0C;
+    constexpr u32 EMC_PMACRO_DDLL_LONG_CMD_4                = 0xC10;
+    constexpr u32 EMC_PMACRO_DDLL_SHORT_CMD_0               = 0xC20;
+    constexpr u32 EMC_PMACRO_DDLL_SHORT_CMD_1               = 0xC24;
+    constexpr u32 EMC_PMACRO_DDLL_SHORT_CMD_2               = 0xC28;
+    constexpr u32 EMC_PMACRO_CFG_PM_GLOBAL_0                = 0xC30;
+    constexpr u32 EMC_PMACRO_VTTGEN_CTRL_0                  = 0xC34;
+    constexpr u32 EMC_PMACRO_VTTGEN_CTRL_1                  = 0xC38;
+    constexpr u32 EMC_PMACRO_BG_BIAS_CTRL_0                 = 0xC3C;
+    constexpr u32 EMC_PMACRO_PAD_CFG_CTRL                   = 0xC40;
+    constexpr u32 EMC_PMACRO_ZCTRL                          = 0xC44;
+    constexpr u32 EMC_PMACRO_RX_TERM                        = 0xC48;
+    constexpr u32 EMC_PMACRO_CMD_TX_DRV                     = 0xC4C;
+    constexpr u32 EMC_PMACRO_CMD_PAD_RX_CTRL                = 0xC50;
+    constexpr u32 EMC_PMACRO_DATA_PAD_RX_CTRL               = 0xC54;
+    constexpr u32 EMC_PMACRO_CMD_RX_TERM_MODE               = 0xC58;
+    constexpr u32 EMC_PMACRO_DATA_RX_TERM_MODE              = 0xC5C;
+    constexpr u32 EMC_PMACRO_CMD_PAD_TX_CTRL                = 0xC60;
+    constexpr u32 EMC_PMACRO_DATA_PAD_TX_CTRL               = 0xC64;
+    constexpr u32 EMC_PMACRO_COMMON_PAD_TX_CTRL             = 0xC68;
+    constexpr u32 EMC_PMACRO_DSR_VTTGEN_CTRL_0              = 0xC6C;
+    constexpr u32 EMC_PMACRO_DQ_TX_DRV                      = 0xC70;
+    constexpr u32 EMC_PMACRO_CA_TX_DRV                      = 0xC74;
+    constexpr u32 EMC_PMACRO_AUTOCAL_CFG_COMMON             = 0xC78;
+    constexpr u32 EMC_PMACRO_BRICK_MAPPING_0                = 0xC80;
+    constexpr u32 EMC_PMACRO_BRICK_MAPPING_1                = 0xC84;
+    constexpr u32 EMC_PMACRO_BRICK_MAPPING_2                = 0xC88;
+    constexpr u32 EMC_PMACRO_DDLL_PERIODIC_OFFSET           = 0xCE8;
+    constexpr u32 EMC_PMACRO_VTTGEN_CTRL_2                  = 0xCF0;
+    constexpr u32 EMC_PMACRO_IB_RXRT                        = 0xCF4;
+    constexpr u32 EMC_PMACRO_TRAINING_CTRL_0                = 0xCF8;
+    constexpr u32 EMC_PMACRO_TRAINING_CTRL_1                = 0xCFC;
+    constexpr u32 EMC_PMACRO_DIG_DLL_STATUS_0               = 0xD20;
+    constexpr u32 EMC_PMACRO_PERBIT_FGCG_CTRL_0             = 0xD40;
+    constexpr u32 EMC_PMACRO_PERBIT_FGCG_CTRL_1             = 0xD44;
+    constexpr u32 EMC_PMACRO_PERBIT_FGCG_CTRL_2             = 0xD48;
+    constexpr u32 EMC_PMACRO_PERBIT_FGCG_CTRL_3             = 0xD4C;
+    constexpr u32 EMC_PMACRO_PERBIT_FGCG_CTRL_4             = 0xD50;
+    constexpr u32 EMC_PMACRO_PERBIT_FGCG_CTRL_5             = 0xD54;
+    constexpr u32 EMC_PMACRO_PERBIT_RFU_CTRL_0              = 0xD60;
+    constexpr u32 EMC_PMACRO_PERBIT_RFU_CTRL_1              = 0xD64;
+    constexpr u32 EMC_PMACRO_PERBIT_RFU_CTRL_2              = 0xD68;
+    constexpr u32 EMC_PMACRO_PERBIT_RFU_CTRL_3              = 0xD6C;
+    constexpr u32 EMC_PMACRO_PERBIT_RFU_CTRL_4              = 0xD70;
+    constexpr u32 EMC_PMACRO_PERBIT_RFU_CTRL_5              = 0xD74;
+    constexpr u32 EMC_PMACRO_PERBIT_RFU1_CTRL_0             = 0xD80;
+    constexpr u32 EMC_PMACRO_PERBIT_RFU1_CTRL_1             = 0xD84;
+    constexpr u32 EMC_PMACRO_PERBIT_RFU1_CTRL_2             = 0xD88;
+    constexpr u32 EMC_PMACRO_PERBIT_RFU1_CTRL_3             = 0xD8C;
+    constexpr u32 EMC_PMACRO_PERBIT_RFU1_CTRL_4             = 0xD90;
+    constexpr u32 EMC_PMACRO_PERBIT_RFU1_CTRL_5             = 0xD94;
+    constexpr u32 EMC_TRAINING_CMD                          = 0xE00;
+    constexpr u32 EMC_TRAINING_CTRL                         = 0xE04;
+    constexpr u32 EMC_TRAINING_STATUS                       = 0xE08;
+    constexpr u32 EMC_TRAINING_QUSE_CORS_CTRL               = 0xE0C;
+    constexpr u32 EMC_TRAINING_QUSE_FINE_CTRL               = 0xE10;
+    constexpr u32 EMC_TRAINING_QUSE_CTRL_MISC               = 0xE14;
+    constexpr u32 EMC_TRAINING_WRITE_FINE_CTRL              = 0xE18;
+    constexpr u32 EMC_TRAINING_WRITE_CTRL_MISC              = 0xE1C;
+    constexpr u32 EMC_TRAINING_WRITE_VREF_CTRL              = 0xE20;
+    constexpr u32 EMC_TRAINING_READ_FINE_CTRL               = 0xE24;
+    constexpr u32 EMC_TRAINING_READ_CTRL_MISC               = 0xE28;
+    constexpr u32 EMC_TRAINING_READ_VREF_CTRL               = 0xE2C;
+    constexpr u32 EMC_TRAINING_CA_FINE_CTRL                 = 0xE30;
+    constexpr u32 EMC_TRAINING_CA_CTRL_MISC                 = 0xE34;
+    constexpr u32 EMC_TRAINING_CA_CTRL_MISC1                = 0xE38;
+    constexpr u32 EMC_TRAINING_CA_VREF_CTRL                 = 0xE3C;
+    constexpr u32 EMC_TRAINING_SETTLE                       = 0xE44;
+    constexpr u32 EMC_TRAINING_MPC                          = 0xE5C;
+    constexpr u32 EMC_TRAINING_PATRAM_CTRL                  = 0xE60;
+    constexpr u32 EMC_TRAINING_PATRAM_DQ                    = 0xE64;
+    constexpr u32 EMC_TRAINING_PATRAM_DMI                   = 0xE68;
+    constexpr u32 EMC_TRAINING_VREF_SETTLE                  = 0xE6C;
+    constexpr u32 EMC_TRAINING_RW_OFFSET_IB_BYTE0           = 0xE98;
+    constexpr u32 EMC_TRAINING_RW_OFFSET_IB_BYTE1           = 0xE9C;
+    constexpr u32 EMC_TRAINING_RW_OFFSET_IB_BYTE2           = 0xEA0;
+    constexpr u32 EMC_TRAINING_RW_OFFSET_IB_BYTE3           = 0xEA4;
+    constexpr u32 EMC_TRAINING_RW_OFFSET_IB_MISC            = 0xEA8;
+    constexpr u32 EMC_TRAINING_RW_OFFSET_OB_BYTE0           = 0xEAC;
+    constexpr u32 EMC_TRAINING_RW_OFFSET_OB_BYTE1           = 0xEB0;
+    constexpr u32 EMC_TRAINING_RW_OFFSET_OB_BYTE2           = 0xEB4;
+    constexpr u32 EMC_TRAINING_RW_OFFSET_OB_BYTE3           = 0xEB8;
+    constexpr u32 EMC_TRAINING_RW_OFFSET_OB_MISC            = 0xEBC;
+    constexpr u32 EMC_TRAINING_OPT_CA_VREF                  = 0xEC0;
+    constexpr u32 EMC_TRAINING_OPT_DQ_OB_VREF               = 0xEC4;
+    constexpr u32 EMC_TRAINING_QUSE_VREF_CTRL               = 0xED0;
+    constexpr u32 EMC_TRAINING_OPT_DQS_IB_VREF_RANK0        = 0xED4;
+    constexpr u32 EMC_TRAINING_OPT_DQS_IB_VREF_RANK1        = 0xED8;
+
     struct Register emcTable[] = {
-        { "EMC_INTSTATUS_0", 0x0, },
-        { "EMC_INTMASK_0", 0x4, },
-        { "EMC_DBG_0", 0x8, },
-        { "EMC_CFG_0", 0xc, },
-        { "EMC_ADR_CFG_0", 0x10, },
-        { "EMC_REFCTRL_0", 0x20, },
-        { "EMC_PIN_0", 0x24, },
-        { "EMC_TIMING_CONTROL_0", 0x28, },
-        { "EMC_RC_0", 0x2c, },
-        { "EMC_RFC_0", 0x30, },
-        { "EMC_RAS_0", 0x34, },
-        { "EMC_RP_0", 0x38, },
-        { "EMC_R2W_0", 0x3c, },
-        { "EMC_W2R_0", 0x40, },
-        { "EMC_R2P_0", 0x44, },
-        { "EMC_W2P_0", 0x48, },
-        { "EMC_RD_RCD_0", 0x4c, },
-        { "EMC_WR_RCD_0", 0x50, },
-        { "EMC_RRD_0", 0x54, },
-        { "EMC_REXT_0", 0x58, },
-        { "EMC_WDV_0", 0x5c, },
-        { "EMC_QUSE_0", 0x60, },
-        { "EMC_QRST_0", 0x64, },
-        { "EMC_QSAFE_0", 0x68, },
-        { "EMC_RDV_0", 0x6c, },
-        { "EMC_REFRESH_0", 0x70, },
-        { "EMC_BURST_REFRESH_NUM_0", 0x74, },
-        { "EMC_PDEX2WR_0", 0x78, },
-        { "EMC_PDEX2RD_0", 0x7c, },
-        { "EMC_PCHG2PDEN_0", 0x80, },
-        { "EMC_ACT2PDEN_0", 0x84, },
-        { "EMC_AR2PDEN_0", 0x88, },
-        { "EMC_RW2PDEN_0", 0x8c, },
-        { "EMC_TXSR_0", 0x90, },
-        { "EMC_TCKE_0", 0x94, },
-        { "EMC_TFAW_0", 0x98, },
-        { "EMC_TRPAB_0", 0x9c, },
-        { "EMC_TCLKSTABLE_0", 0xa0, },
-        { "EMC_TCLKSTOP_0", 0xa4, },
-        { "EMC_TREFBW_0", 0xa8, },
-        { "EMC_TPPD_0", 0xac, },
-        { "EMC_ODT_WRITE_0", 0xb0, },
-        { "EMC_PDEX2MRR_0", 0xb4, },
-        { "EMC_WEXT_0", 0xb8, },
-        { "EMC_RFC_SLR_0", 0xc0, },
-        { "EMC_MRS_WAIT_CNT2_0", 0xc4, },
-        { "EMC_MRS_WAIT_CNT_0", 0xc8, },
-        { "EMC_MRS_0", 0xcc, },
-        { "EMC_EMRS_0", 0xd0, },
-        { "EMC_REF_0", 0xd4, },
-        { "EMC_PRE_0", 0xd8, },
-        { "EMC_NOP_0", 0xdc, },
-        { "EMC_SELF_REF_0", 0xe0, },
-        { "EMC_DPD_0", 0xe4, },
-        { "EMC_MRW_0", 0xe8, },
-        { "EMC_MRR_0", 0xec, },
-        { "EMC_CMDQ_0", 0xf0, },
-        { "EMC_MC2EMCQ_0", 0xf4, },
-        { "EMC_FBIO_SPARE_0", 0x100, },
-        { "EMC_FBIO_CFG5_0", 0x104, },
-        { "EMC_FBIO_CFG6_0", 0x114, },
-        { "EMC_PDEX2CKE_0", 0x118, },
-        { "EMC_CKE2PDEN_0", 0x11c, },
-        { "EMC_CFG_RSV_0", 0x120, },
-        { "EMC_ACPD_CONTROL_0", 0x124, },
-        { "EMC_MPC_0", 0x128, },
-        { "EMC_EMRS2_0", 0x12c, },
-        { "EMC_EMRS3_0", 0x130, },
-        { "EMC_MRW2_0", 0x134, },
-        { "EMC_MRW3_0", 0x138, },
-        { "EMC_MRW4_0", 0x13c, },
-        { "EMC_CLKEN_OVERRIDE_0", 0x140, },
-        { "EMC_R2R_0", 0x144, },
-        { "EMC_W2W_0", 0x148, },
-        { "EMC_EINPUT_0", 0x14c, },
-        { "EMC_EINPUT_DURATION_0", 0x150, },
-        { "EMC_PUTERM_EXTRA_0", 0x154, },
-        { "EMC_TCKESR_0", 0x158, },
-        { "EMC_TPD_0", 0x15c, },
-        { "EMC_AUTO_CAL_CONFIG_0", 0x2a4, },
-        { "EMC_AUTO_CAL_INTERVAL_0", 0x2a8, },
-        { "EMC_AUTO_CAL_STATUS_0", 0x2ac, },
-        { "EMC_REQ_CTRL_0", 0x2b0, },
-        { "EMC_EMC_STATUS_0", 0x2b4, },
-        { "EMC_CFG_2_0", 0x2b8, },
-        { "EMC_CFG_DIG_DLL_0", 0x2bc, },
-        { "EMC_CFG_DIG_DLL_PERIOD_0", 0x2c0, },
-        { "EMC_DIG_DLL_STATUS_0", 0x2c4, },
-        { "EMC_CFG_DIG_DLL_1_0", 0x2c8, },
-        { "EMC_RDV_MASK_0", 0x2cc, },
-        { "EMC_WDV_MASK_0", 0x2d0, },
-        { "EMC_RDV_EARLY_MASK_0", 0x2d4, },
-        { "EMC_RDV_EARLY_0", 0x2d8, },
-        { "EMC_AUTO_CAL_CONFIG8_0", 0x2dc, },
-        { "EMC_ZCAL_INTERVAL_0", 0x2e0, },
-        { "EMC_ZCAL_WAIT_CNT_0", 0x2e4, },
-        { "EMC_ZCAL_MRW_CMD_0", 0x2e8, },
-        { "EMC_ZQ_CAL_0", 0x2ec, },
-        { "EMC_XM2COMPPADCTRL3_0", 0x2f4, },
-        { "EMC_AUTO_CAL_VREF_SEL_0_0", 0x2f8, },
-        { "EMC_AUTO_CAL_VREF_SEL_1_0", 0x300, },
-        { "EMC_XM2COMPPADCTRL_0", 0x30c, },
-        { "EMC_FDPD_CTRL_DQ_0", 0x310, },
-        { "EMC_FDPD_CTRL_CMD_0", 0x314, },
-        { "EMC_PMACRO_CMD_BRICK_CTRL_FDPD_0", 0x318, },
-        { "EMC_PMACRO_DATA_BRICK_CTRL_FDPD_0", 0x31c, },
-        { "EMC_SCRATCH0_0", 0x324, },
-        { "EMC_PMACRO_BRICK_CTRL_RFU1_0", 0x330, },
-        { "EMC_PMACRO_BRICK_CTRL_RFU2_0", 0x334, },
-        { "EMC_CMD_MAPPING_CMD0_0_0", 0x380, },
-        { "EMC_CMD_MAPPING_CMD0_1_0", 0x384, },
-        { "EMC_CMD_MAPPING_CMD0_2_0", 0x388, },
-        { "EMC_CMD_MAPPING_CMD1_0_0", 0x38c, },
-        { "EMC_CMD_MAPPING_CMD1_1_0", 0x390, },
-        { "EMC_CMD_MAPPING_CMD1_2_0", 0x394, },
-        { "EMC_CMD_MAPPING_CMD2_0_0", 0x398, },
-        { "EMC_CMD_MAPPING_CMD2_1_0", 0x39c, },
-        { "EMC_CMD_MAPPING_CMD2_2_0", 0x3a0, },
-        { "EMC_CMD_MAPPING_CMD3_0_0", 0x3a4, },
-        { "EMC_CMD_MAPPING_CMD3_1_0", 0x3a8, },
-        { "EMC_CMD_MAPPING_CMD3_2_0", 0x3ac, },
-        { "EMC_CMD_MAPPING_BYTE_0", 0x3b0, },
-        { "EMC_TR_TIMING_0_0", 0x3b4, },
-        { "EMC_TR_CTRL_0_0", 0x3b8, },
-        { "EMC_TR_CTRL_1_0", 0x3bc, },
-        { "EMC_SWITCH_BACK_CTRL_0", 0x3c0, },
-        { "EMC_TR_RDV_0", 0x3c4, },
-        { "EMC_STALL_THEN_EXE_BEFORE_CLKCHANGE_0", 0x3c8, },
-        { "EMC_STALL_THEN_EXE_AFTER_CLKCHANGE_0", 0x3cc, },
-        { "EMC_UNSTALL_RW_AFTER_CLKCHANGE_0", 0x3d0, },
-        { "EMC_AUTO_CAL_", 0x3d4, },
-        { "EMC_SEL_DPD_CTRL_0", 0x3d8, },
-        { "EMC_PRE_REFRESH_REQ_CNT_0", 0x3dc, },
-        { "EMC_DYN_SELF_REF_CONTROL_0", 0x3e0, },
-        { "EMC_TXSRDLL_0", 0x3e4, },
-        { "EMC_CCFIFO_ADDR_0", 0x3e8, },
-        { "EMC_CCFIFO_DATA_0", 0x3ec, },
-        { "EMC_CCFIFO_STATUS_0", 0x3f0, },
-        { "EMC_TR_QPOP_0", 0x3f4, },
-        { "EMC_TR_RDV_MASK_0", 0x3f8, },
-        { "EMC_TR_QSAFE_0", 0x3fc, },
-        { "EMC_TR_QRST_0", 0x400, },
-        { "EMC_SWIZZLE_RANK0_BYTE0_0", 0x404, },
-        { "EMC_SWIZZLE_RANK0_BYTE1_0", 0x408, },
-        { "EMC_SWIZZLE_RANK0_BYTE2_0", 0x40c, },
-        { "EMC_SWIZZLE_RANK0_BYTE3_0", 0x410, },
-        { "EMC_SWIZZLE_RANK1_BYTE0_0", 0x418, },
-        { "EMC_SWIZZLE_RANK1_BYTE1_0", 0x41c, },
-        { "EMC_SWIZZLE_RANK1_BYTE2_0", 0x420, },
-        { "EMC_SWIZZLE_RANK1_BYTE3_0", 0x424, },
-        { "EMC_ISSUE_QRST_0", 0x428, },
-        { "EMC_PMC_SCRATCH1_0", 0x440, },
-        { "EMC_PMC_SCRATCH2_0", 0x444, },
-        { "EMC_PMC_SCRATCH3_0", 0x448, },
-        { "EMC_AUTO_CAL_CONFIG2_0", 0x458, },
-        { "EMC_AUTO_CAL_CONFIG3_0", 0x45c, },
-        { "EMC_TR_DVFS_0", 0x460, },
-        { "EMC_AUTO_CAL_CHANNEL_0", 0x464, },
-        { "EMC_IBDLY_0", 0x468, },
-        { "EMC_OBDLY_0", 0x46c, },
-        { "EMC_TXDSRVTTGEN_0", 0x480, },
-        { "EMC_WE_DURATION_0", 0x48c, },
-        { "EMC_WS_DURATION_0", 0x490, },
-        { "EMC_WEV_0", 0x494, },
-        { "EMC_WSV_0", 0x498, },
-        { "EMC_CFG_3_0", 0x49c, },
-        { "EMC_MRW5_0", 0x4a0, },
-        { "EMC_MRW6_0", 0x4a4, },
-        { "EMC_MRW7_0", 0x4a8, },
-        { "EMC_MRW8_0", 0x4ac, },
-        { "EMC_MRW9_0", 0x4b0, },
-        { "EMC_MRW10_0", 0x4b4, },
-        { "EMC_MRW11_0", 0x4b8, },
-        { "EMC_MRW12_0", 0x4bc, },
-        { "EMC_MRW13_0", 0x4c0, },
-        { "EMC_MRW14_0", 0x4c4, },
-        { "EMC_MRW15_0", 0x4d0, },
-        { "EMC_CFG_SYNC_0", 0x4d4, },
-        { "EMC_FDPD_CTRL_CMD_NO_RAMP_0", 0x4d8, },
-        { "EMC_WDV_CHK_0", 0x4e0, },
-        { "EMC_CFG_PIPE_2_0", 0x554, },
-        { "EMC_CFG_PIPE_CLK_0", 0x558, },
-        { "EMC_CFG_PIPE_1_0", 0x55c, },
-        { "EMC_CFG_PIPE_0", 0x560, },
-        { "EMC_QPOP_0", 0x564, },
-        { "EMC_QUSE_WIDTH_0", 0x568, },
-        { "EMC_PUTERM_WIDTH_0", 0x56c, },
-        { "EMC_BGBIAS_CTL0_0", 0x570, },
-        { "EMC_AUTO_CAL_CONFIG7_0", 0x574, },
-        { "EMC_XM2COMPPADCTRL2_0", 0x578, },
-        { "EMC_COMP_PAD_SW_CTRL_0", 0x57c, },
-        { "EMC_REFCTRL2_0", 0x580, },
-        { "EMC_FBIO_CFG7_0", 0x584, },
-        { "EMC_DATA_BRLSHFT_0_0", 0x588, },
-        { "EMC_DATA_BRLSHFT_1_0", 0x58c, },
-        { "EMC_RFCPB_0", 0x590, },
-        { "EMC_DQS_BRLSHFT_0_0", 0x594, },
-        { "EMC_DQS_BRLSHFT_1_0", 0x598, },
-        { "EMC_CMD_BRLSHFT_0_0", 0x59c, },
-        { "EMC_CMD_BRLSHFT_1_0", 0x5a0, },
-        { "EMC_CMD_BRLSHFT_2_0", 0x5a4, },
-        { "EMC_CMD_BRLSHFT_3_0", 0x5a8, },
-        { "EMC_QUSE_BRLSHFT_0_0", 0x5ac, },
-        { "EMC_AUTO_CAL_CONFIG4_0", 0x5b0, },
-        { "EMC_AUTO_CAL_CONFIG5_0", 0x5b4, },
-        { "EMC_QUSE_BRLSHFT_1_0", 0x5b8, },
-        { "EMC_QUSE_BRLSHFT_2_0", 0x5bc, },
-        { "EMC_CCDMW_0", 0x5c0, },
-        { "EMC_QUSE_BRLSHFT_3_0", 0x5c4, },
-        { "EMC_FBIO_CFG8_0", 0x5c8, },
-        { "EMC_AUTO_CAL_CONFIG6_0", 0x5cc, },
-        { "EMC_PROTOBIST_CONFIG_ADR_1_0", 0x5d0, },
-        { "EMC_PROTOBIST_CONFIG_ADR_2_0", 0x5d4, },
-        { "EMC_PROTOBIST_MISC_0", 0x5d8, },
-        { "EMC_PROTOBIST_WDATA_LOWER_0", 0x5dc, },
-        { "EMC_PROTOBIST_WDATA_UPPER_0", 0x5e0, },
-        { "EMC_PROTOBIST_RDATA_0", 0x5ec, },
-        { "EMC_DLL_CFG_0_0", 0x5e4, },
-        { "EMC_DLL_CFG_1_0", 0x5e8, },
-        { "EMC_CONFIG_SAMPLE_DELAY_0", 0x5f0, },
-        { "EMC_CFG_UPDATE_0", 0x5f4, },
-        { "EMC_PMACRO_QUSE_DDLL_RANK0_0_0", 0x600, },
-        { "EMC_PMACRO_QUSE_DDLL_RANK0_1_0", 0x604, },
-        { "EMC_PMACRO_QUSE_DDLL_RANK0_2_0", 0x608, },
-        { "EMC_PMACRO_QUSE_DDLL_RANK0_3_0", 0x60c, },
-        { "EMC_PMACRO_QUSE_DDLL_RANK0_4_0", 0x610, },
-        { "EMC_PMACRO_QUSE_DDLL_RANK0_5_0", 0x614, },
-        { "EMC_PMACRO_QUSE_DDLL_RANK1_0_0", 0x620, },
-        { "EMC_PMACRO_QUSE_DDLL_RANK1_1_0", 0x624, },
-        { "EMC_PMACRO_QUSE_DDLL_RANK1_2_0", 0x628, },
-        { "EMC_PMACRO_QUSE_DDLL_RANK1_3_0", 0x62c, },
-        { "EMC_PMACRO_QUSE_DDLL_RANK1_4_0", 0x630, },
-        { "EMC_PMACRO_QUSE_DDLL_RANK1_5_0", 0x634, },
-        { "EMC_PMACRO_OB_DDLL_LONG_DQ_RANK0_0_0", 0x640, },
-        { "EMC_PMACRO_OB_DDLL_LONG_DQ_RANK0_1_0", 0x644, },
-        { "EMC_PMACRO_OB_DDLL_LONG_DQ_RANK0_2_0", 0x648, },
-        { "EMC_PMACRO_OB_DDLL_LONG_DQ_RANK0_3_0", 0x64c, },
-        { "EMC_PMACRO_OB_DDLL_LONG_DQ_RANK0_4_0", 0x650, },
-        { "EMC_PMACRO_OB_DDLL_LONG_DQ_RANK0_5_0", 0x654, },
-        { "EMC_PMACRO_OB_DDLL_LONG_DQ_RANK1_0_0", 0x660, },
-        { "EMC_PMACRO_OB_DDLL_LONG_DQ_RANK1_1_0", 0x664, },
-        { "EMC_PMACRO_OB_DDLL_LONG_DQ_RANK1_2_0", 0x668, },
-        { "EMC_PMACRO_OB_DDLL_LONG_DQ_RANK1_3_0", 0x66c, },
-        { "EMC_PMACRO_OB_DDLL_LONG_DQ_RANK1_4_0", 0x670, },
-        { "EMC_PMACRO_OB_DDLL_LONG_DQ_RANK1_5_0", 0x674, },
-        { "EMC_PMACRO_OB_DDLL_LONG_DQS_RANK0_0_0", 0x680, },
-        { "EMC_PMACRO_OB_DDLL_LONG_DQS_RANK0_1_0", 0x684, },
-        { "EMC_PMACRO_OB_DDLL_LONG_DQS_RANK0_2_0", 0x688, },
-        { "EMC_PMACRO_OB_DDLL_LONG_DQS_RANK0_3_0", 0x68c, },
-        { "EMC_PMACRO_OB_DDLL_LONG_DQS_RANK0_4_0", 0x690, },
-        { "EMC_PMACRO_OB_DDLL_LONG_DQS_RANK0_5_0", 0x694, },
-        { "EMC_PMACRO_OB_DDLL_LONG_DQS_RANK1_0_0", 0x6a0, },
-        { "EMC_PMACRO_OB_DDLL_LONG_DQS_RANK1_1_0", 0x6a4, },
-        { "EMC_PMACRO_OB_DDLL_LONG_DQS_RANK1_2_0", 0x6a8, },
-        { "EMC_PMACRO_OB_DDLL_LONG_DQS_RANK1_3_0", 0x6ac, },
-        { "EMC_PMACRO_OB_DDLL_LONG_DQS_RANK1_4_0", 0x6b0, },
-        { "EMC_PMACRO_OB_DDLL_LONG_DQS_RANK1_5_0", 0x6b4, },
-        { "EMC_PMACRO_IB_DDLL_LONG_DQS_RANK0_0_0", 0x6c0, },
-        { "EMC_PMACRO_IB_DDLL_LONG_DQS_RANK0_1_0", 0x6c4, },
-        { "EMC_PMACRO_IB_DDLL_LONG_DQS_RANK0_2_0", 0x6c8, },
-        { "EMC_PMACRO_IB_DDLL_LONG_DQS_RANK0_3_0", 0x6cc, },
-        { "EMC_PMACRO_IB_DDLL_LONG_DQS_RANK0_4_0", 0x6d0, },
-        { "EMC_PMACRO_IB_DDLL_LONG_DQS_RANK0_5_0", 0x6d4, },
-        { "EMC_PMACRO_IB_DDLL_LONG_DQS_RANK1_0_0", 0x6e0, },
-        { "EMC_PMACRO_IB_DDLL_LONG_DQS_RANK1_1_0", 0x6e4, },
-        { "EMC_PMACRO_IB_DDLL_LONG_DQS_RANK1_2_0", 0x6e8, },
-        { "EMC_PMACRO_IB_DDLL_LONG_DQS_RANK1_3_0", 0x6ec, },
-        { "EMC_PMACRO_IB_DDLL_LONG_DQS_RANK1_4_0", 0x6f0, },
-        { "EMC_PMACRO_IB_DDLL_LONG_DQS_RANK1_5_0", 0x6f4, },
-        { "EMC_PMACRO_AUTOCAL_CFG_0_0", 0x700, },
-        { "EMC_PMACRO_AUTOCAL_CFG_1_0", 0x704, },
-        { "EMC_PMACRO_AUTOCAL_CFG_2_0", 0x708, },
-        { "EMC_PMACRO_TX_PWRD_0_0", 0x720, },
-        { "EMC_PMACRO_TX_PWRD_1_0", 0x724, },
-        { "EMC_PMACRO_TX_PWRD_2_0", 0x728, },
-        { "EMC_PMACRO_TX_PWRD_3_0", 0x72c, },
-        { "EMC_PMACRO_TX_PWRD_4_0", 0x730, },
-        { "EMC_PMACRO_TX_PWRD_5_0", 0x734, },
-        { "EMC_PMACRO_TX_SEL_CLK_SRC_0_0", 0x740, },
-        { "EMC_PMACRO_TX_SEL_CLK_SRC_1_0", 0x744, },
-        { "EMC_PMACRO_TX_SEL_CLK_SRC_2_0", 0x748, },
-        { "EMC_PMACRO_TX_SEL_CLK_SRC_3_0", 0x74c, },
-        { "EMC_PMACRO_TX_SEL_CLK_SRC_4_0", 0x750, },
-        { "EMC_PMACRO_TX_SEL_CLK_SRC_5_0", 0x754, },
-        { "EMC_PMACRO_DDLL_BYPASS_0", 0x760, },
-        { "EMC_PMACRO_DDLL_PWRD_0_0", 0x770, },
-        { "EMC_PMACRO_DDLL_PWRD_1_0", 0x774, },
-        { "EMC_PMACRO_DDLL_PWRD_2_0", 0x778, },
-        { "EMC_PMACRO_CMD_CTRL_0_0", 0x780, },
-        { "EMC_PMACRO_CMD_CTRL_1_0", 0x784, },
-        { "EMC_PMACRO_CMD_CTRL_2_0", 0x788, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE0_0_0", 0x800, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE0_1_0", 0x804, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE0_2_0", 0x808, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE0_3_0", 0x80c, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE1_0_0", 0x810, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE1_1_0", 0x814, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE1_2_0", 0x818, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE1_3_0", 0x81c, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE2_0_0", 0x820, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE2_1_0", 0x824, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE2_2_0", 0x828, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE2_3_0", 0x82c, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE3_0_0", 0x830, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE3_1_0", 0x834, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE3_2_0", 0x838, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE3_3_0", 0x83c, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE4_0_0", 0x840, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE4_1_0", 0x844, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE4_2_0", 0x848, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE4_3_0", 0x84c, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE5_0_0", 0x850, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE5_1_0", 0x854, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE5_2_0", 0x858, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE5_3_0", 0x85c, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE6_0_0", 0x860, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE6_1_0", 0x864, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE6_2_0", 0x868, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE6_3_0", 0x86c, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE7_0_0", 0x870, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE7_1_0", 0x874, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE7_2_0", 0x878, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE7_3_0", 0x87c, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD0_0_0", 0x880, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD0_1_0", 0x884, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD0_2_0", 0x888, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD0_3_0", 0x88c, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD1_0_0", 0x890, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD1_1_0", 0x894, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD1_2_0", 0x898, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD1_3_0", 0x89c, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD2_0_0", 0x8a0, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD2_1_0", 0x8a4, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD2_2_0", 0x8a8, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD2_3_0", 0x8ac, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD3_0_0", 0x8b0, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD3_1_0", 0x8b4, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD3_2_0", 0x8b8, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD3_3_0", 0x8bc, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE0_0_0", 0x900, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE0_1_0", 0x904, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE0_2_0", 0x908, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE0_3_0", 0x90c, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE1_0_0", 0x910, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE1_1_0", 0x914, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE1_2_0", 0x918, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE1_3_0", 0x91c, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE2_0_0", 0x920, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE2_1_0", 0x924, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE2_2_0", 0x928, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE2_3_0", 0x92c, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE3_0_0", 0x930, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE3_1_0", 0x934, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE3_2_0", 0x938, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE3_3_0", 0x93c, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE4_0_0", 0x940, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE4_1_0", 0x944, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE4_2_0", 0x948, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE4_3_0", 0x94c, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE5_0_0", 0x950, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE5_1_0", 0x954, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE5_2_0", 0x958, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE5_3_0", 0x95c, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE6_0_0", 0x960, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE6_1_0", 0x964, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE6_2_0", 0x968, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE6_3_0", 0x96c, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE7_0_0", 0x970, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE7_1_0", 0x974, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE7_2_0", 0x978, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE7_3_0", 0x97c, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD0_0_0", 0x980, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD0_1_0", 0x984, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD0_2_0", 0x988, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD0_3_0", 0x98c, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD1_0_0", 0x990, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD1_1_0", 0x994, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD1_2_0", 0x998, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD1_3_0", 0x99c, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD2_0_0", 0x9a0, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD2_1_0", 0x9a4, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD2_2_0", 0x9a8, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD2_3_0", 0x9ac, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD3_0_0", 0x9b0, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD3_1_0", 0x9b4, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD3_2_0", 0x9b8, },
-        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD3_3_0", 0x9bc, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE0_0_0", 0xa00, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE0_1_0", 0xa04, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE0_2_0", 0xa08, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE1_0_0", 0xa10, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE1_1_0", 0xa14, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE1_2_0", 0xa18, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE2_0_0", 0xa20, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE2_1_0", 0xa24, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE2_2_0", 0xa28, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE3_0_0", 0xa30, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE3_1_0", 0xa34, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE3_2_0", 0xa38, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE4_0_0", 0xa40, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE4_1_0", 0xa44, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE4_2_0", 0xa48, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE5_0_0", 0xa50, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE5_1_0", 0xa54, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE5_2_0", 0xa58, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE6_0_0", 0xa60, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE6_1_0", 0xa64, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE6_2_0", 0xa68, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE7_0_0", 0xa70, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE7_1_0", 0xa74, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE7_2_0", 0xa78, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_CMD0_0_0", 0xa80, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_CMD0_1_0", 0xa84, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_CMD0_2_0", 0xa88, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_CMD1_0_0", 0xa90, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_CMD1_1_0", 0xa94, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_CMD1_2_0", 0xa98, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_CMD2_0_0", 0xaa0, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_CMD2_1_0", 0xaa4, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_CMD2_2_0", 0xaa8, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_CMD3_0_0", 0xab0, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_CMD3_1_0", 0xab4, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_CMD3_2_0", 0xab8, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE0_0_0", 0xb00, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE0_1_0", 0xb04, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE0_2_0", 0xb08, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE1_0_0", 0xb10, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE1_1_0", 0xb14, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE1_2_0", 0xb18, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE2_0_0", 0xb20, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE2_1_0", 0xb24, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE2_2_0", 0xb28, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE3_0_0", 0xb30, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE3_1_0", 0xb34, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE3_2_0", 0xb38, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE4_0_0", 0xb40, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE4_1_0", 0xb44, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE4_2_0", 0xb48, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE5_0_0", 0xb50, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE5_1_0", 0xb54, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE5_2_0", 0xb58, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE6_0_0", 0xb60, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE6_1_0", 0xb64, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE6_2_0", 0xb68, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE7_0_0", 0xb70, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE7_1_0", 0xb74, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE7_2_0", 0xb78, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_CMD0_0_0", 0xb80, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_CMD0_1_0", 0xb84, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_CMD0_2_0", 0xb88, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_CMD1_0_0", 0xb90, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_CMD1_1_0", 0xb94, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_CMD1_2_0", 0xb98, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_CMD2_0_0", 0xba0, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_CMD2_1_0", 0xba4, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_CMD2_2_0", 0xba8, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_CMD3_0_0", 0xbb0, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_CMD3_1_0", 0xbb4, },
-        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_CMD3_2_0", 0xbb8, },
-        { "EMC_PMACRO_IB_VREF_DQ_0_0", 0xbe0, },
-        { "EMC_PMACRO_IB_VREF_DQ_1_0", 0xbe4, },
-        { "EMC_PMACRO_IB_VREF_DQ_2_0", 0xbe8, },
-        { "EMC_PMACRO_IB_VREF_DQS_0_0", 0xbf0, },
-        { "EMC_PMACRO_IB_VREF_DQS_1_0", 0xbf4, },
-        { "EMC_PMACRO_IB_VREF_DQS_2_0", 0xbf8, },
-        { "EMC_PMACRO_DDLL_LONG_CMD_0_0", 0xc00, },
-        { "EMC_PMACRO_DDLL_LONG_CMD_1_0", 0xc04, },
-        { "EMC_PMACRO_DDLL_LONG_CMD_2_0", 0xc08, },
-        { "EMC_PMACRO_DDLL_LONG_CMD_3_0", 0xc0c, },
-        { "EMC_PMACRO_DDLL_LONG_CMD_4_0", 0xc10, },
-        { "EMC_PMACRO_DDLL_LONG_CMD_5_0", 0xc14, },
-        { "EMC_PMACRO_DDLL_SHORT_CMD_0_0", 0xc20, },
-        { "EMC_PMACRO_DDLL_SHORT_CMD_1_0", 0xc24, },
-        { "EMC_PMACRO_DDLL_SHORT_CMD_2_0", 0xc28, },
-        { "EMC_PMACRO_CFG_PM_GLOBAL_0_0", 0xc30, },
-        { "EMC_PMACRO_VTTGEN_CTRL_0_0", 0xc34, },
-        { "EMC_PMACRO_VTTGEN_CTRL_1_0", 0xc38, },
-        { "EMC_PMACRO_BG_BIAS_CTRL_0_0", 0xc3c, },
-        { "EMC_PMACRO_PAD_CFG_CTRL_0", 0xc40, },
-        { "EMC_PMACRO_ZCTRL_0", 0xc44, },
-        { "EMC_PMACRO_RX_TERM_0", 0xc48, },
-        { "EMC_PMACRO_CMD_TX_DRV_0", 0xc4c, },
-        { "EMC_PMACRO_CMD_PAD_RX_CTRL_0", 0xc50, },
-        { "EMC_PMACRO_DATA_PAD_RX_CTRL_0", 0xc54, },
-        { "EMC_PMACRO_CMD_RX_TERM_MODE_0", 0xc58, },
-        { "EMC_PMACRO_DATA_RX_TERM_MODE_0", 0xc5c, },
-        { "EMC_PMACRO_CMD_PAD_TX_CTRL_0", 0xc60, },
-        { "EMC_PMACRO_DATA_PAD_TX_CTRL_0", 0xc64, },
-        { "EMC_PMACRO_COMMON_PAD_TX_CTRL_0", 0xc68, },
-        { "EMC_PMACRO_DQ_TX_DRV_0", 0xc70, },
-        { "EMC_PMACRO_CA_TX_DRV_0", 0xc74, },
-        { "EMC_PMACRO_AUTOCAL_CFG_COMMON_0", 0xc78, },
-        { "EMC_PMACRO_DDLLCAL_CAL_0", 0xce0, },
-        { "EMC_PMACRO_DDLL_OFFSET_0", 0xce4, },
-        { "EMC_PMACRO_DDLL_PERIODIC_OFFSET_0", 0xce8, },
-        { "EMC_PMACRO_VTTGEN_CTRL_2_0", 0xcf0, },
-        { "EMC_PMACRO_IB_RXRT_0", 0xcf4, },
-        { "EMC_PMACRO_TRAINING_CTRL_0_0", 0xcf8, },
-        { "EMC_PMACRO_TRAINING_CTRL_1_0", 0xcfc, },
-        { "EMC_TRAINING_CMD_0", 0xe00, },
-        { "EMC_TRAINING_CTRL_0", 0xe04, },
-        { "EMC_TRAINING_STATUS_0", 0xe08, },
-        { "EMC_TRAINING_QUSE_CORS_CTRL_0", 0xe0c, },
-        { "EMC_TRAINING_QUSE_FINE_CTRL_0", 0xe10, },
-        { "EMC_TRAINING_QUSE_CTRL_MISC_0", 0xe14, },
-        { "EMC_TRAINING_WRITE_FINE_CTRL_0", 0xe18, },
-        { "EMC_TRAINING_WRITE_CTRL_MISC_0", 0xe1c, },
-        { "EMC_TRAINING_WRITE_VREF_CTRL_0", 0xe20, },
-        { "EMC_TRAINING_READ_FINE_CTRL_0", 0xe24, },
-        { "EMC_TRAINING_READ_CTRL_MISC_0", 0xe28, },
-        { "EMC_TRAINING_READ_VREF_CTRL_0", 0xe2c, },
-        { "EMC_TRAINING_CA_FINE_CTRL_0", 0xe30, },
-        { "EMC_TRAINING_CA_CTRL_MISC_0", 0xe34, },
-        { "EMC_TRAINING_CA_CTRL_MISC1_0", 0xe38, },
-        { "EMC_TRAINING_CA_VREF_CTRL_0", 0xe3c, },
-        { "EMC_TRAINING_CA_TADR_CTRL_0", 0xe40, },
-        { "EMC_TRAINING_SETTLE_0", 0xe44, },
-        { "EMC_TRAINING_DEBUG_CTRL_0", 0xe48, },
-        { "EMC_TRAINING_MPC_0", 0x5ec, },
-        { "EMC_TRAINING_PATRAM_CTRL_0", 0xe60, },
-        { "EMC_TRAINING_PATRAM_DQ_0", 0xe64, },
-        { "EMC_TRAINING_PATRAM_DMI_0", 0xe68, },
-        { "EMC_TRAINING_VREF_SETTLE_0", 0xe6c, },
-        { "EMC_TRAINING_OPT_CA_VREF_0", 0xec0, },
-        { "EMC_TRAINING_OPT_DQ_OB_VREF_0", 0xec4, },
-        { "EMC_TRAINING_QUSE_VREF_CTRL_0", 0xed0, },
+        { "EMC_INTSTATUS", EMC_INTSTATUS },
+        { "EMC_DBG", EMC_DBG },
+        { "EMC_CFG", EMC_CFG },
+        { "EMC_ADR_CFG", EMC_ADR_CFG },
+        { "EMC_REFCTRL", EMC_REFCTRL },
+        { "EMC_PIN", EMC_PIN },
+        { "EMC_TIMING_CONTROL", EMC_TIMING_CONTROL },
+        { "EMC_RC", EMC_RC },
+        { "EMC_RFC", EMC_RFC },
+        { "EMC_RAS", EMC_RAS },
+        { "EMC_RP", EMC_RP },
+        { "EMC_R2W", EMC_R2W },
+        { "EMC_W2R", EMC_W2R },
+        { "EMC_R2P", EMC_R2P },
+        { "EMC_W2P", EMC_W2P },
+        { "EMC_RD_RCD", EMC_RD_RCD },
+        { "EMC_WR_RCD", EMC_WR_RCD },
+        { "EMC_RRD", EMC_RRD },
+        { "EMC_REXT", EMC_REXT },
+        { "EMC_WDV", EMC_WDV },
+        { "EMC_QUSE", EMC_QUSE },
+        { "EMC_QRST", EMC_QRST },
+        { "EMC_QSAFE", EMC_QSAFE },
+        { "EMC_RDV", EMC_RDV },
+        { "EMC_REFRESH", EMC_REFRESH },
+        { "EMC_BURST_REFRESH_NUM", EMC_BURST_REFRESH_NUM },
+        { "EMC_PDEX2WR", EMC_PDEX2WR },
+        { "EMC_PDEX2RD", EMC_PDEX2RD },
+        { "EMC_PCHG2PDEN", EMC_PCHG2PDEN },
+        { "EMC_ACT2PDEN", EMC_ACT2PDEN },
+        { "EMC_AR2PDEN", EMC_AR2PDEN },
+        { "EMC_RW2PDEN", EMC_RW2PDEN },
+        { "EMC_TXSR", EMC_TXSR },
+        { "EMC_TCKE", EMC_TCKE },
+        { "EMC_TFAW", EMC_TFAW },
+        { "EMC_TRPAB", EMC_TRPAB },
+        { "EMC_TCLKSTABLE", EMC_TCLKSTABLE },
+        { "EMC_TCLKSTOP", EMC_TCLKSTOP },
+        { "EMC_TREFBW", EMC_TREFBW },
+        { "EMC_TPPD", EMC_TPPD },
+        { "EMC_ODT_WRITE", EMC_ODT_WRITE },
+        { "EMC_PDEX2MRR", EMC_PDEX2MRR },
+        { "EMC_WEXT", EMC_WEXT },
+        { "EMC_TRTM", EMC_TRTM },
+        { "EMC_RFC_SLR", EMC_RFC_SLR },
+        { "EMC_MRS_WAIT_CNT2", EMC_MRS_WAIT_CNT2 },
+        { "EMC_MRS_WAIT_CNT", EMC_MRS_WAIT_CNT },
+        { "EMC_MRS", EMC_MRS },
+        { "EMC_EMRS", EMC_EMRS },
+        { "EMC_REF", EMC_REF },
+        { "EMC_NOP", EMC_NOP },
+        { "EMC_SELF_REF", EMC_SELF_REF },
+        { "EMC_MRW", EMC_MRW },
+        { "EMC_MRR", EMC_MRR },
+        { "EMC_CMDQ", EMC_CMDQ },
+        { "EMC_MC2EMCQ", EMC_MC2EMCQ },
+        { "EMC_TWTM", EMC_TWTM },
+        { "EMC_TRATM", EMC_TRATM },
+        { "EMC_FBIO_SPARE", EMC_FBIO_SPARE },
+        { "EMC_FBIO_CFG5", EMC_FBIO_CFG5 },
+        { "EMC_TWATM", EMC_TWATM },
+        { "EMC_TR2REF", EMC_TR2REF },
+        { "EMC_PMACRO_DATA_PI_CTRL", EMC_PMACRO_DATA_PI_CTRL },
+        { "EMC_PMACRO_CMD_PI_CTRL", EMC_PMACRO_CMD_PI_CTRL },
+        { "EMC_PDEX2CKE", EMC_PDEX2CKE },
+        { "EMC_CKE2PDEN", EMC_CKE2PDEN },
+        { "EMC_CFG_RSV", EMC_CFG_RSV },
+        { "EMC_ACPD_CONTROL", EMC_ACPD_CONTROL },
+        { "EMC_MPC", EMC_MPC },
+        { "EMC_EMRS2", EMC_EMRS2 },
+        { "EMC_MRW2", EMC_MRW2 },
+        { "EMC_MRW3", EMC_MRW3 },
+        { "EMC_MRW3", EMC_MRW3 },
+        { "EMC_MRW4", EMC_MRW4 },
+        { "EMC_CLKEN_OVERRIDE", EMC_CLKEN_OVERRIDE },
+        { "EMC_R2R", EMC_R2R },
+        { "EMC_W2W", EMC_W2W },
+        { "EMC_EINPUT", EMC_EINPUT },
+        { "EMC_EINPUT_DURATION", EMC_EINPUT_DURATION },
+        { "EMC_PUTERM_EXTRA", EMC_PUTERM_EXTRA },
+        { "EMC_TCKESR", EMC_TCKESR },
+        { "EMC_TPD", EMC_TPD },
+        { "EMC_AUTO_CAL_CONFIG", EMC_AUTO_CAL_CONFIG },
+        { "EMC_AUTO_CAL_INTERVAL", EMC_AUTO_CAL_INTERVAL },
+        { "EMC_REQ_CTRL", EMC_REQ_CTRL },
+        { "EMC_EMC_STATUS", EMC_EMC_STATUS },
+        { "EMC_CFG_2", EMC_CFG_2 },
+        { "EMC_CFG_DIG_DLL", EMC_CFG_DIG_DLL },
+        { "EMC_CFG_DIG_DLL_PERIOD", EMC_CFG_DIG_DLL_PERIOD },
+        { "EMC_DIG_DLL_STATUS", EMC_DIG_DLL_STATUS },
+        { "EMC_CFG_DIG_DLL_1", EMC_CFG_DIG_DLL_1 },
+        { "EMC_RDV_MASK", EMC_RDV_MASK },
+        { "EMC_WDV_MASK", EMC_WDV_MASK },
+        { "EMC_RDV_EARLY_MASK", EMC_RDV_EARLY_MASK },
+        { "EMC_RDV_EARLY", EMC_RDV_EARLY },
+        { "EMC_AUTO_CAL_CONFIG8", EMC_AUTO_CAL_CONFIG8 },
+        { "EMC_ZCAL_INTERVAL", EMC_ZCAL_INTERVAL },
+        { "EMC_ZCAL_WAIT_CNT", EMC_ZCAL_WAIT_CNT },
+        { "EMC_ZCAL_MRW_CMD", EMC_ZCAL_MRW_CMD },
+        { "EMC_ZQ_CAL", EMC_ZQ_CAL },
+        { "EMC_XM2COMPPADCTRL3", EMC_XM2COMPPADCTRL3 },
+        { "EMC_AUTO_CAL_VREF_SEL_0", EMC_AUTO_CAL_VREF_SEL_0 },
+        { "EMC_AUTO_CAL_VREF_SEL_1", EMC_AUTO_CAL_VREF_SEL_1 },
+        { "EMC_XM2COMPPADCTRL", EMC_XM2COMPPADCTRL },
+        { "EMC_FDPD_CTRL_DQ", EMC_FDPD_CTRL_DQ },
+        { "EMC_FDPD_CTRL_CMD", EMC_FDPD_CTRL_CMD },
+        { "EMC_PMACRO_CMD_BRICK_CTRL_FDPD", EMC_PMACRO_CMD_BRICK_CTRL_FDPD },
+        { "EMC_PMACRO_DATA_BRICK_CTRL_FDPD", EMC_PMACRO_DATA_BRICK_CTRL_FDPD },
+        { "EMC_SCRATCH0", EMC_SCRATCH0 },
+        { "EMC_PMACRO_BRICK_CTRL_RFU1", EMC_PMACRO_BRICK_CTRL_RFU1 },
+        { "EMC_PMACRO_BRICK_CTRL_RFU2", EMC_PMACRO_BRICK_CTRL_RFU2 },
+        { "EMC_CMD_MAPPING_CMD0_0", EMC_CMD_MAPPING_CMD0_0 },
+        { "EMC_CMD_MAPPING_CMD0_1", EMC_CMD_MAPPING_CMD0_1 },
+        { "EMC_CMD_MAPPING_CMD0_2", EMC_CMD_MAPPING_CMD0_2 },
+        { "EMC_CMD_MAPPING_CMD1_0", EMC_CMD_MAPPING_CMD1_0 },
+        { "EMC_CMD_MAPPING_CMD1_1", EMC_CMD_MAPPING_CMD1_1 },
+        { "EMC_CMD_MAPPING_CMD1_2", EMC_CMD_MAPPING_CMD1_2 },
+        { "EMC_CMD_MAPPING_CMD2_0", EMC_CMD_MAPPING_CMD2_0 },
+        { "EMC_CMD_MAPPING_CMD2_1", EMC_CMD_MAPPING_CMD2_1 },
+        { "EMC_CMD_MAPPING_CMD2_2", EMC_CMD_MAPPING_CMD2_2 },
+        { "EMC_CMD_MAPPING_CMD3_0", EMC_CMD_MAPPING_CMD3_0 },
+        { "EMC_CMD_MAPPING_CMD3_1", EMC_CMD_MAPPING_CMD3_1 },
+        { "EMC_CMD_MAPPING_CMD3_2", EMC_CMD_MAPPING_CMD3_2 },
+        { "EMC_CMD_MAPPING_BYTE", EMC_CMD_MAPPING_BYTE },
+        { "EMC_TR_TIMING_0", EMC_TR_TIMING_0 },
+        { "EMC_TR_CTRL_0", EMC_TR_CTRL_0 },
+        { "EMC_TR_CTRL_1", EMC_TR_CTRL_1 },
+        { "EMC_SWITCH_BACK_CTRL", EMC_SWITCH_BACK_CTRL },
+        { "EMC_TR_RDV", EMC_TR_RDV },
+        { "EMC_STALL_THEN_EXE_AFTER_CLKCHANGE", EMC_STALL_THEN_EXE_AFTER_CLKCHANGE },
+        { "EMC_SEL_DPD_CTRL", EMC_SEL_DPD_CTRL },
+        { "EMC_PRE_REFRESH_REQ_CNT", EMC_PRE_REFRESH_REQ_CNT },
+        { "EMC_DYN_SELF_REF_CONTROL", EMC_DYN_SELF_REF_CONTROL },
+        { "EMC_TXSRDLL", EMC_TXSRDLL },
+        { "EMC_CCFIFO_ADDR", EMC_CCFIFO_ADDR },
+        { "EMC_CCFIFO_DATA", EMC_CCFIFO_DATA },
+        { "EMC_CCFIFO_STATUS", EMC_CCFIFO_STATUS },
+        { "EMC_TR_QPOP", EMC_TR_QPOP },
+        { "EMC_TR_RDV_MASK", EMC_TR_RDV_MASK },
+        { "EMC_TR_QSAFE", EMC_TR_QSAFE },
+        { "EMC_TR_QRST", EMC_TR_QRST },
+        { "EMC_SWIZZLE_RANK0_BYTE0", EMC_SWIZZLE_RANK0_BYTE0 },
+        { "EMC_SWIZZLE_RANK0_BYTE1", EMC_SWIZZLE_RANK0_BYTE1 },
+        { "EMC_SWIZZLE_RANK0_BYTE2", EMC_SWIZZLE_RANK0_BYTE2 },
+        { "EMC_SWIZZLE_RANK0_BYTE3", EMC_SWIZZLE_RANK0_BYTE3 },
+        { "EMC_SWIZZLE_RANK1_BYTE0", EMC_SWIZZLE_RANK1_BYTE0 },
+        { "EMC_SWIZZLE_RANK1_BYTE1", EMC_SWIZZLE_RANK1_BYTE1 },
+        { "EMC_SWIZZLE_RANK1_BYTE2", EMC_SWIZZLE_RANK1_BYTE2 },
+        { "EMC_SWIZZLE_RANK1_BYTE3", EMC_SWIZZLE_RANK1_BYTE3 },
+        { "EMC_ISSUE_QRST", EMC_ISSUE_QRST },
+        { "EMC_AUTO_CAL_CONFIG9", EMC_AUTO_CAL_CONFIG9 },
+        { "EMC_PMC_SCRATCH1", EMC_PMC_SCRATCH1 },
+        { "EMC_PMC_SCRATCH2", EMC_PMC_SCRATCH2 },
+        { "EMC_PMC_SCRATCH3", EMC_PMC_SCRATCH3 },
+        { "EMC_AUTO_CAL_CONFIG2", EMC_AUTO_CAL_CONFIG2 },
+        { "EMC_AUTO_CAL_CONFIG3", EMC_AUTO_CAL_CONFIG3 },
+        { "EMC_TR_DVFS", EMC_TR_DVFS },
+        { "EMC_AUTO_CAL_CHANNEL", EMC_AUTO_CAL_CHANNEL },
+        { "EMC_IBDLY", EMC_IBDLY },
+        { "EMC_OBDLY", EMC_OBDLY },
+        { "EMC_TXDSRVTTGEN", EMC_TXDSRVTTGEN },
+        { "EMC_WE_DURATION", EMC_WE_DURATION },
+        { "EMC_WS_DURATION", EMC_WS_DURATION },
+        { "EMC_WEV", EMC_WEV },
+        { "EMC_WSV", EMC_WSV },
+        { "EMC_CFG_3", EMC_CFG_3 },
+        { "EMC_MRW5", EMC_MRW5 },
+        { "EMC_MRW6", EMC_MRW6 },
+        { "EMC_MRW7", EMC_MRW7 },
+        { "EMC_MRW8", EMC_MRW8 },
+        { "EMC_MRW9", EMC_MRW9 },
+        { "EMC_MRW10", EMC_MRW10 },
+        { "EMC_MRW11", EMC_MRW11 },
+        { "EMC_MRW12", EMC_MRW12 },
+        { "EMC_MRW13", EMC_MRW13 },
+        { "EMC_MRW14", EMC_MRW14 },
+        { "EMC_MRW15", EMC_MRW15 },
+        { "EMC_CFG_SYNC", EMC_CFG_SYNC },
+        { "EMC_FDPD_CTRL_CMD_NO_RAMP", EMC_FDPD_CTRL_CMD_NO_RAMP },
+        { "EMC_WDV_CHK", EMC_WDV_CHK },
+        { "EMC_CFG_PIPE_2", EMC_CFG_PIPE_2 },
+        { "EMC_CFG_PIPE_CLK", EMC_CFG_PIPE_CLK },
+        { "EMC_CFG_PIPE_1", EMC_CFG_PIPE_1 },
+        { "EMC_CFG_PIPE", EMC_CFG_PIPE },
+        { "EMC_QPOP", EMC_QPOP },
+        { "EMC_QUSE_WIDTH", EMC_QUSE_WIDTH },
+        { "EMC_PUTERM_WIDTH", EMC_PUTERM_WIDTH },
+        { "EMC_AUTO_CAL_CONFIG7", EMC_AUTO_CAL_CONFIG7 },
+        { "EMC_XM2COMPPADCTRL2", EMC_XM2COMPPADCTRL2 },
+        { "EMC_REFCTRL2", EMC_REFCTRL2 },
+        { "EMC_FBIO_CFG7", EMC_FBIO_CFG7 },
+        { "EMC_DATA_BRLSHFT_0", EMC_DATA_BRLSHFT_0 },
+        { "EMC_DATA_BRLSHFT_1", EMC_DATA_BRLSHFT_1 },
+        { "EMC_RFCPB", EMC_RFCPB },
+        { "EMC_DQS_BRLSHFT_0", EMC_DQS_BRLSHFT_0 },
+        { "EMC_DQS_BRLSHFT_1", EMC_DQS_BRLSHFT_1 },
+        { "EMC_CMD_BRLSHFT_0", EMC_CMD_BRLSHFT_0 },
+        { "EMC_CMD_BRLSHFT_1", EMC_CMD_BRLSHFT_1 },
+        { "EMC_CMD_BRLSHFT_2", EMC_CMD_BRLSHFT_2 },
+        { "EMC_CMD_BRLSHFT_3", EMC_CMD_BRLSHFT_3 },
+        { "EMC_QUSE_BRLSHFT_0", EMC_QUSE_BRLSHFT_0 },
+        { "EMC_AUTO_CAL_CONFIG4", EMC_AUTO_CAL_CONFIG4 },
+        { "EMC_AUTO_CAL_CONFIG5", EMC_AUTO_CAL_CONFIG5 },
+        { "EMC_QUSE_BRLSHFT_1", EMC_QUSE_BRLSHFT_1 },
+        { "EMC_QUSE_BRLSHFT_2", EMC_QUSE_BRLSHFT_2 },
+        { "EMC_CCDMW", EMC_CCDMW },
+        { "EMC_QUSE_BRLSHFT_3", EMC_QUSE_BRLSHFT_3 },
+        { "EMC_FBIO_CFG8", EMC_FBIO_CFG8 },
+        { "EMC_AUTO_CAL_CONFIG6", EMC_AUTO_CAL_CONFIG6 },
+        { "EMC_PMACRO_DLL_CFG_0", EMC_PMACRO_DLL_CFG_0 },
+        { "EMC_PMACRO_DLL_CFG_1", EMC_PMACRO_DLL_CFG_1 },
+        { "EMC_PMACRO_DLL_CFG_2", EMC_PMACRO_DLL_CFG_2 },
+        { "EMC_CONFIG_SAMPLE_DELAY", EMC_CONFIG_SAMPLE_DELAY },
+        { "EMC_CFG_UPDATE", EMC_CFG_UPDATE },
+        { "EMC_PMACRO_QUSE_DDLL_RANK0_0", EMC_PMACRO_QUSE_DDLL_RANK0_0 },
+        { "EMC_PMACRO_QUSE_DDLL_RANK0_1", EMC_PMACRO_QUSE_DDLL_RANK0_1 },
+        { "EMC_PMACRO_QUSE_DDLL_RANK0_2", EMC_PMACRO_QUSE_DDLL_RANK0_2 },
+        { "EMC_PMACRO_QUSE_DDLL_RANK0_3", EMC_PMACRO_QUSE_DDLL_RANK0_3 },
+        { "EMC_PMACRO_QUSE_DDLL_RANK0_4", EMC_PMACRO_QUSE_DDLL_RANK0_4 },
+        { "EMC_PMACRO_QUSE_DDLL_RANK0_5", EMC_PMACRO_QUSE_DDLL_RANK0_5 },
+        { "EMC_PMACRO_QUSE_DDLL_RANK1_4", EMC_PMACRO_QUSE_DDLL_RANK1_4 },
+        { "EMC_PMACRO_QUSE_DDLL_RANK1_5", EMC_PMACRO_QUSE_DDLL_RANK1_5 },
+        { "EMC_PMACRO_QUSE_DDLL_RANK1_0", EMC_PMACRO_QUSE_DDLL_RANK1_0 },
+        { "EMC_PMACRO_QUSE_DDLL_RANK1_1", EMC_PMACRO_QUSE_DDLL_RANK1_1 },
+        { "EMC_PMACRO_QUSE_DDLL_RANK1_2", EMC_PMACRO_QUSE_DDLL_RANK1_2 },
+        { "EMC_PMACRO_QUSE_DDLL_RANK1_3", EMC_PMACRO_QUSE_DDLL_RANK1_3 },
+        { "EMC_PMACRO_OB_DDLL_LONG_DQ_RANK0_0", EMC_PMACRO_OB_DDLL_LONG_DQ_RANK0_0 },
+        { "EMC_PMACRO_OB_DDLL_LONG_DQ_RANK0_1", EMC_PMACRO_OB_DDLL_LONG_DQ_RANK0_1 },
+        { "EMC_PMACRO_OB_DDLL_LONG_DQ_RANK0_2", EMC_PMACRO_OB_DDLL_LONG_DQ_RANK0_2 },
+        { "EMC_PMACRO_OB_DDLL_LONG_DQ_RANK0_3", EMC_PMACRO_OB_DDLL_LONG_DQ_RANK0_3 },
+        { "EMC_PMACRO_OB_DDLL_LONG_DQ_RANK0_4", EMC_PMACRO_OB_DDLL_LONG_DQ_RANK0_4 },
+        { "EMC_PMACRO_OB_DDLL_LONG_DQ_RANK0_5", EMC_PMACRO_OB_DDLL_LONG_DQ_RANK0_5 },
+        { "EMC_PMACRO_OB_DDLL_LONG_DQ_RANK1_0", EMC_PMACRO_OB_DDLL_LONG_DQ_RANK1_0 },
+        { "EMC_PMACRO_OB_DDLL_LONG_DQ_RANK1_1", EMC_PMACRO_OB_DDLL_LONG_DQ_RANK1_1 },
+        { "EMC_PMACRO_OB_DDLL_LONG_DQ_RANK1_2", EMC_PMACRO_OB_DDLL_LONG_DQ_RANK1_2 },
+        { "EMC_PMACRO_OB_DDLL_LONG_DQ_RANK1_3", EMC_PMACRO_OB_DDLL_LONG_DQ_RANK1_3 },
+        { "EMC_PMACRO_OB_DDLL_LONG_DQ_RANK1_4", EMC_PMACRO_OB_DDLL_LONG_DQ_RANK1_4 },
+        { "EMC_PMACRO_OB_DDLL_LONG_DQ_RANK1_5", EMC_PMACRO_OB_DDLL_LONG_DQ_RANK1_5 },
+        { "EMC_PMACRO_OB_DDLL_LONG_DQS_RANK0_0", EMC_PMACRO_OB_DDLL_LONG_DQS_RANK0_0 },
+        { "EMC_PMACRO_OB_DDLL_LONG_DQS_RANK0_1", EMC_PMACRO_OB_DDLL_LONG_DQS_RANK0_1 },
+        { "EMC_PMACRO_OB_DDLL_LONG_DQS_RANK0_2", EMC_PMACRO_OB_DDLL_LONG_DQS_RANK0_2 },
+        { "EMC_PMACRO_OB_DDLL_LONG_DQS_RANK0_3", EMC_PMACRO_OB_DDLL_LONG_DQS_RANK0_3 },
+        { "EMC_PMACRO_OB_DDLL_LONG_DQS_RANK0_4", EMC_PMACRO_OB_DDLL_LONG_DQS_RANK0_4 },
+        { "EMC_PMACRO_OB_DDLL_LONG_DQS_RANK0_5", EMC_PMACRO_OB_DDLL_LONG_DQS_RANK0_5 },
+        { "EMC_PMACRO_OB_DDLL_LONG_DQS_RANK1_0", EMC_PMACRO_OB_DDLL_LONG_DQS_RANK1_0 },
+        { "EMC_PMACRO_OB_DDLL_LONG_DQS_RANK1_1", EMC_PMACRO_OB_DDLL_LONG_DQS_RANK1_1 },
+        { "EMC_PMACRO_OB_DDLL_LONG_DQS_RANK1_2", EMC_PMACRO_OB_DDLL_LONG_DQS_RANK1_2 },
+        { "EMC_PMACRO_OB_DDLL_LONG_DQS_RANK1_3", EMC_PMACRO_OB_DDLL_LONG_DQS_RANK1_3 },
+        { "EMC_PMACRO_OB_DDLL_LONG_DQS_RANK1_4", EMC_PMACRO_OB_DDLL_LONG_DQS_RANK1_4 },
+        { "EMC_PMACRO_OB_DDLL_LONG_DQS_RANK1_5", EMC_PMACRO_OB_DDLL_LONG_DQS_RANK1_5 },
+        { "EMC_PMACRO_IB_DDLL_LONG_DQS_RANK0_0", EMC_PMACRO_IB_DDLL_LONG_DQS_RANK0_0 },
+        { "EMC_PMACRO_IB_DDLL_LONG_DQS_RANK0_1", EMC_PMACRO_IB_DDLL_LONG_DQS_RANK0_1 },
+        { "EMC_PMACRO_IB_DDLL_LONG_DQS_RANK0_2", EMC_PMACRO_IB_DDLL_LONG_DQS_RANK0_2 },
+        { "EMC_PMACRO_IB_DDLL_LONG_DQS_RANK0_3", EMC_PMACRO_IB_DDLL_LONG_DQS_RANK0_3 },
+        { "EMC_PMACRO_IB_DDLL_LONG_DQS_RANK1_0", EMC_PMACRO_IB_DDLL_LONG_DQS_RANK1_0 },
+        { "EMC_PMACRO_IB_DDLL_LONG_DQS_RANK1_1", EMC_PMACRO_IB_DDLL_LONG_DQS_RANK1_1 },
+        { "EMC_PMACRO_IB_DDLL_LONG_DQS_RANK1_2", EMC_PMACRO_IB_DDLL_LONG_DQS_RANK1_2 },
+        { "EMC_PMACRO_IB_DDLL_LONG_DQS_RANK1_3", EMC_PMACRO_IB_DDLL_LONG_DQS_RANK1_3 },
+        { "EMC_PMACRO_AUTOCAL_CFG_0", EMC_PMACRO_AUTOCAL_CFG_0 },
+        { "EMC_PMACRO_AUTOCAL_CFG_1", EMC_PMACRO_AUTOCAL_CFG_1 },
+        { "EMC_PMACRO_AUTOCAL_CFG_2", EMC_PMACRO_AUTOCAL_CFG_2 },
+        { "EMC_PMACRO_TX_PWRD_0", EMC_PMACRO_TX_PWRD_0 },
+        { "EMC_PMACRO_TX_PWRD_1", EMC_PMACRO_TX_PWRD_1 },
+        { "EMC_PMACRO_TX_PWRD_2", EMC_PMACRO_TX_PWRD_2 },
+        { "EMC_PMACRO_TX_PWRD_3", EMC_PMACRO_TX_PWRD_3 },
+        { "EMC_PMACRO_TX_PWRD_4", EMC_PMACRO_TX_PWRD_4 },
+        { "EMC_PMACRO_TX_PWRD_5", EMC_PMACRO_TX_PWRD_5 },
+        { "EMC_PMACRO_TX_SEL_CLK_SRC_0", EMC_PMACRO_TX_SEL_CLK_SRC_0 },
+        { "EMC_PMACRO_TX_SEL_CLK_SRC_1", EMC_PMACRO_TX_SEL_CLK_SRC_1 },
+        { "EMC_PMACRO_TX_SEL_CLK_SRC_3", EMC_PMACRO_TX_SEL_CLK_SRC_3 },
+        { "EMC_PMACRO_TX_SEL_CLK_SRC_2", EMC_PMACRO_TX_SEL_CLK_SRC_2 },
+        { "EMC_PMACRO_TX_SEL_CLK_SRC_4", EMC_PMACRO_TX_SEL_CLK_SRC_4 },
+        { "EMC_PMACRO_TX_SEL_CLK_SRC_5", EMC_PMACRO_TX_SEL_CLK_SRC_5 },
+        { "EMC_PMACRO_DDLL_BYPASS", EMC_PMACRO_DDLL_BYPASS },
+        { "EMC_PMACRO_DDLL_PWRD_0", EMC_PMACRO_DDLL_PWRD_0 },
+        { "EMC_PMACRO_DDLL_PWRD_1", EMC_PMACRO_DDLL_PWRD_1 },
+        { "EMC_PMACRO_DDLL_PWRD_2", EMC_PMACRO_DDLL_PWRD_2 },
+        { "EMC_PMACRO_CMD_CTRL_0", EMC_PMACRO_CMD_CTRL_0 },
+        { "EMC_PMACRO_CMD_CTRL_1", EMC_PMACRO_CMD_CTRL_1 },
+        { "EMC_PMACRO_CMD_CTRL_2", EMC_PMACRO_CMD_CTRL_2 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE0_0", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE0_0 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE0_1", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE0_1 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE0_2", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE0_2 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE0_3", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE0_3 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE1_0", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE1_0 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE1_1", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE1_1 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE1_2", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE1_2 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE1_3", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE1_3 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE2_0", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE2_0 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE2_1", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE2_1 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE2_2", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE2_2 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE2_3", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE2_3 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE3_0", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE3_0 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE3_1", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE3_1 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE3_2", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE3_2 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE3_3", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE3_3 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE4_0", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE4_0 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE4_1", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE4_1 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE4_2", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE4_2 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE4_3", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE4_3 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE5_0", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE5_0 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE5_1", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE5_1 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE5_2", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE5_2 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE5_3", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE5_3 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE6_0", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE6_0 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE6_1", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE6_1 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE6_2", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE6_2 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE6_3", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE6_3 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE7_0", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE7_0 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE7_1", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE7_1 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE7_2", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE7_2 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE7_3", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_BYTE7_3 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD0_0", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD0_0 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD0_1", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD0_1 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD0_2", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD0_2 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD0_3", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD0_3 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD1_0", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD1_0 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD1_1", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD1_1 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD1_2", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD1_2 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD1_3", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD1_3 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD2_0", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD2_0 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD2_1", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD2_1 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD2_2", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD2_2 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD2_3", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD2_3 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD3_0", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD3_0 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD3_1", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD3_1 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD3_2", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD3_2 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD3_3", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK0_CMD3_3 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE0_0", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE0_0 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE0_1", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE0_1 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE0_2", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE0_2 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE0_3", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE0_3 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE1_0", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE1_0 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE1_1", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE1_1 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE1_2", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE1_2 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE1_3", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE1_3 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE2_0", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE2_0 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE2_1", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE2_1 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE2_2", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE2_2 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE2_3", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE2_3 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE3_0", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE3_0 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE3_1", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE3_1 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE3_2", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE3_2 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE3_3", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE3_3 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE4_0", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE4_0 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE4_1", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE4_1 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE4_2", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE4_2 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE4_3", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE4_3 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE5_0", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE5_0 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE5_1", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE5_1 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE5_2", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE5_2 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE5_3", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE5_3 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE6_0", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE6_0 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE6_1", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE6_1 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE6_2", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE6_2 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE6_3", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE6_3 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE7_0", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE7_0 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE7_1", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE7_1 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE7_2", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE7_2 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE7_3", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_BYTE7_3 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD0_0", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD0_0 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD0_1", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD0_1 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD0_2", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD0_2 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD0_3", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD0_3 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD1_0", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD1_0 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD1_1", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD1_1 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD1_2", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD1_2 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD1_3", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD1_3 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD2_0", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD2_0 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD2_1", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD2_1 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD2_2", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD2_2 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD2_3", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD2_3 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD3_0", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD3_0 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD3_1", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD3_1 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD3_2", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD3_2 },
+        { "EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD3_3", EMC_PMACRO_OB_DDLL_SHORT_DQ_RANK1_CMD3_3 },
+        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE0_0", EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE0_0 },
+        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE0_1", EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE0_1 },
+        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE0_2", EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE0_2 },
+        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE1_0", EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE1_0 },
+        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE1_1", EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE1_1 },
+        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE1_2", EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE1_2 },
+        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE2_0", EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE2_0 },
+        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE2_1", EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE2_1 },
+        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE2_2", EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE2_2 },
+        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE3_0", EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE3_0 },
+        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE3_1", EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE3_1 },
+        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE3_2", EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE3_2 },
+        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE4_0", EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE4_0 },
+        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE4_1", EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE4_1 },
+        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE4_2", EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE4_2 },
+        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE5_0", EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE5_0 },
+        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE5_1", EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE5_1 },
+        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE5_2", EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE5_2 },
+        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE6_0", EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE6_0 },
+        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE6_1", EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE6_1 },
+        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE6_2", EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE6_2 },
+        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE7_0", EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE7_0 },
+        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE7_1", EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE7_1 },
+        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE7_2", EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK0_BYTE7_2 },
+        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE0_0", EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE0_0 },
+        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE0_1", EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE0_1 },
+        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE0_2", EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE0_2 },
+        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE1_0", EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE1_0 },
+        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE1_1", EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE1_1 },
+        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE1_2", EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE1_2 },
+        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE2_0", EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE2_0 },
+        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE2_1", EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE2_1 },
+        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE2_2", EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE2_2 },
+        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE3_0", EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE3_0 },
+        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE3_1", EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE3_1 },
+        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE3_2", EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE3_2 },
+        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE4_0", EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE4_0 },
+        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE4_1", EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE4_1 },
+        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE4_2", EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE4_2 },
+        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE5_0", EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE5_0 },
+        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE5_1", EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE5_1 },
+        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE5_2", EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE5_2 },
+        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE6_0", EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE6_0 },
+        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE6_1", EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE6_1 },
+        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE6_2", EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE6_2 },
+        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE7_0", EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE7_0 },
+        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE7_1", EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE7_1 },
+        { "EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE7_2", EMC_PMACRO_IB_DDLL_SHORT_DQ_RANK1_BYTE7_2 },
+        { "EMC_PMACRO_IB_VREF_DQ_0", EMC_PMACRO_IB_VREF_DQ_0 },
+        { "EMC_PMACRO_IB_VREF_DQ_1", EMC_PMACRO_IB_VREF_DQ_1 },
+        { "EMC_PMACRO_IB_VREF_DQS_0", EMC_PMACRO_IB_VREF_DQS_0 },
+        { "EMC_PMACRO_IB_VREF_DQS_1", EMC_PMACRO_IB_VREF_DQS_1 },
+        { "EMC_PMACRO_DDLL_LONG_CMD_0", EMC_PMACRO_DDLL_LONG_CMD_0 },
+        { "EMC_PMACRO_DDLL_LONG_CMD_1", EMC_PMACRO_DDLL_LONG_CMD_1 },
+        { "EMC_PMACRO_DDLL_LONG_CMD_2", EMC_PMACRO_DDLL_LONG_CMD_2 },
+        { "EMC_PMACRO_DDLL_LONG_CMD_3", EMC_PMACRO_DDLL_LONG_CMD_3 },
+        { "EMC_PMACRO_DDLL_LONG_CMD_4", EMC_PMACRO_DDLL_LONG_CMD_4 },
+        { "EMC_PMACRO_DDLL_SHORT_CMD_0", EMC_PMACRO_DDLL_SHORT_CMD_0 },
+        { "EMC_PMACRO_DDLL_SHORT_CMD_1", EMC_PMACRO_DDLL_SHORT_CMD_1 },
+        { "EMC_PMACRO_DDLL_SHORT_CMD_2", EMC_PMACRO_DDLL_SHORT_CMD_2 },
+        { "EMC_PMACRO_CFG_PM_GLOBAL_0", EMC_PMACRO_CFG_PM_GLOBAL_0 },
+        { "EMC_PMACRO_VTTGEN_CTRL_0", EMC_PMACRO_VTTGEN_CTRL_0 },
+        { "EMC_PMACRO_VTTGEN_CTRL_1", EMC_PMACRO_VTTGEN_CTRL_1 },
+        { "EMC_PMACRO_BG_BIAS_CTRL_0", EMC_PMACRO_BG_BIAS_CTRL_0 },
+        { "EMC_PMACRO_PAD_CFG_CTRL", EMC_PMACRO_PAD_CFG_CTRL },
+        { "EMC_PMACRO_ZCTRL", EMC_PMACRO_ZCTRL },
+        { "EMC_PMACRO_RX_TERM", EMC_PMACRO_RX_TERM },
+        { "EMC_PMACRO_CMD_TX_DRV", EMC_PMACRO_CMD_TX_DRV },
+        { "EMC_PMACRO_CMD_PAD_RX_CTRL", EMC_PMACRO_CMD_PAD_RX_CTRL },
+        { "EMC_PMACRO_DATA_PAD_RX_CTRL", EMC_PMACRO_DATA_PAD_RX_CTRL },
+        { "EMC_PMACRO_CMD_RX_TERM_MODE", EMC_PMACRO_CMD_RX_TERM_MODE },
+        { "EMC_PMACRO_DATA_RX_TERM_MODE", EMC_PMACRO_DATA_RX_TERM_MODE },
+        { "EMC_PMACRO_CMD_PAD_TX_CTRL", EMC_PMACRO_CMD_PAD_TX_CTRL },
+        { "EMC_PMACRO_DATA_PAD_TX_CTRL", EMC_PMACRO_DATA_PAD_TX_CTRL },
+        { "EMC_PMACRO_COMMON_PAD_TX_CTRL", EMC_PMACRO_COMMON_PAD_TX_CTRL },
+        { "EMC_PMACRO_DSR_VTTGEN_CTRL_0", EMC_PMACRO_DSR_VTTGEN_CTRL_0 },
+        { "EMC_PMACRO_DQ_TX_DRV", EMC_PMACRO_DQ_TX_DRV },
+        { "EMC_PMACRO_CA_TX_DRV", EMC_PMACRO_CA_TX_DRV },
+        { "EMC_PMACRO_AUTOCAL_CFG_COMMON", EMC_PMACRO_AUTOCAL_CFG_COMMON },
+        { "EMC_PMACRO_BRICK_MAPPING_0", EMC_PMACRO_BRICK_MAPPING_0 },
+        { "EMC_PMACRO_BRICK_MAPPING_1", EMC_PMACRO_BRICK_MAPPING_1 },
+        { "EMC_PMACRO_BRICK_MAPPING_2", EMC_PMACRO_BRICK_MAPPING_2 },
+        { "EMC_PMACRO_DDLL_PERIODIC_OFFSET", EMC_PMACRO_DDLL_PERIODIC_OFFSET },
+        { "EMC_PMACRO_VTTGEN_CTRL_2", EMC_PMACRO_VTTGEN_CTRL_2 },
+        { "EMC_PMACRO_IB_RXRT", EMC_PMACRO_IB_RXRT },
+        { "EMC_PMACRO_TRAINING_CTRL_0", EMC_PMACRO_TRAINING_CTRL_0 },
+        { "EMC_PMACRO_TRAINING_CTRL_1", EMC_PMACRO_TRAINING_CTRL_1 },
+        { "EMC_PMACRO_DIG_DLL_STATUS_0", EMC_PMACRO_DIG_DLL_STATUS_0 },
+        { "EMC_PMACRO_PERBIT_FGCG_CTRL_0", EMC_PMACRO_PERBIT_FGCG_CTRL_0 },
+        { "EMC_PMACRO_PERBIT_FGCG_CTRL_1", EMC_PMACRO_PERBIT_FGCG_CTRL_1 },
+        { "EMC_PMACRO_PERBIT_FGCG_CTRL_2", EMC_PMACRO_PERBIT_FGCG_CTRL_2 },
+        { "EMC_PMACRO_PERBIT_FGCG_CTRL_3", EMC_PMACRO_PERBIT_FGCG_CTRL_3 },
+        { "EMC_PMACRO_PERBIT_FGCG_CTRL_4", EMC_PMACRO_PERBIT_FGCG_CTRL_4 },
+        { "EMC_PMACRO_PERBIT_FGCG_CTRL_5", EMC_PMACRO_PERBIT_FGCG_CTRL_5 },
+        { "EMC_PMACRO_PERBIT_RFU_CTRL_0", EMC_PMACRO_PERBIT_RFU_CTRL_0 },
+        { "EMC_PMACRO_PERBIT_RFU_CTRL_1", EMC_PMACRO_PERBIT_RFU_CTRL_1 },
+        { "EMC_PMACRO_PERBIT_RFU_CTRL_2", EMC_PMACRO_PERBIT_RFU_CTRL_2 },
+        { "EMC_PMACRO_PERBIT_RFU_CTRL_3", EMC_PMACRO_PERBIT_RFU_CTRL_3 },
+        { "EMC_PMACRO_PERBIT_RFU_CTRL_4", EMC_PMACRO_PERBIT_RFU_CTRL_4 },
+        { "EMC_PMACRO_PERBIT_RFU_CTRL_5", EMC_PMACRO_PERBIT_RFU_CTRL_5 },
+        { "EMC_PMACRO_PERBIT_RFU1_CTRL_0", EMC_PMACRO_PERBIT_RFU1_CTRL_0 },
+        { "EMC_PMACRO_PERBIT_RFU1_CTRL_1", EMC_PMACRO_PERBIT_RFU1_CTRL_1 },
+        { "EMC_PMACRO_PERBIT_RFU1_CTRL_2", EMC_PMACRO_PERBIT_RFU1_CTRL_2 },
+        { "EMC_PMACRO_PERBIT_RFU1_CTRL_3", EMC_PMACRO_PERBIT_RFU1_CTRL_3 },
+        { "EMC_PMACRO_PERBIT_RFU1_CTRL_4", EMC_PMACRO_PERBIT_RFU1_CTRL_4 },
+        { "EMC_PMACRO_PERBIT_RFU1_CTRL_5", EMC_PMACRO_PERBIT_RFU1_CTRL_5 },
+        { "EMC_TRAINING_CMD", EMC_TRAINING_CMD },
+        { "EMC_TRAINING_CTRL", EMC_TRAINING_CTRL },
+        { "EMC_TRAINING_STATUS", EMC_TRAINING_STATUS },
+        { "EMC_TRAINING_QUSE_CORS_CTRL", EMC_TRAINING_QUSE_CORS_CTRL },
+        { "EMC_TRAINING_QUSE_FINE_CTRL", EMC_TRAINING_QUSE_FINE_CTRL },
+        { "EMC_TRAINING_QUSE_CTRL_MISC", EMC_TRAINING_QUSE_CTRL_MISC },
+        { "EMC_TRAINING_WRITE_FINE_CTRL", EMC_TRAINING_WRITE_FINE_CTRL },
+        { "EMC_TRAINING_WRITE_CTRL_MISC", EMC_TRAINING_WRITE_CTRL_MISC },
+        { "EMC_TRAINING_WRITE_VREF_CTRL", EMC_TRAINING_WRITE_VREF_CTRL },
+        { "EMC_TRAINING_READ_FINE_CTRL", EMC_TRAINING_READ_FINE_CTRL },
+        { "EMC_TRAINING_READ_CTRL_MISC", EMC_TRAINING_READ_CTRL_MISC },
+        { "EMC_TRAINING_READ_VREF_CTRL", EMC_TRAINING_READ_VREF_CTRL },
+        { "EMC_TRAINING_CA_FINE_CTRL", EMC_TRAINING_CA_FINE_CTRL },
+        { "EMC_TRAINING_CA_CTRL_MISC", EMC_TRAINING_CA_CTRL_MISC },
+        { "EMC_TRAINING_CA_CTRL_MISC1", EMC_TRAINING_CA_CTRL_MISC1 },
+        { "EMC_TRAINING_CA_VREF_CTRL", EMC_TRAINING_CA_VREF_CTRL },
+        { "EMC_TRAINING_SETTLE", EMC_TRAINING_SETTLE },
+        { "EMC_TRAINING_MPC", EMC_TRAINING_MPC },
+        { "EMC_TRAINING_PATRAM_CTRL", EMC_TRAINING_PATRAM_CTRL },
+        { "EMC_TRAINING_PATRAM_DQ", EMC_TRAINING_PATRAM_DQ },
+        { "EMC_TRAINING_PATRAM_DMI", EMC_TRAINING_PATRAM_DMI },
+        { "EMC_TRAINING_VREF_SETTLE", EMC_TRAINING_VREF_SETTLE },
+        { "EMC_TRAINING_RW_OFFSET_IB_BYTE0", EMC_TRAINING_RW_OFFSET_IB_BYTE0 },
+        { "EMC_TRAINING_RW_OFFSET_IB_BYTE1", EMC_TRAINING_RW_OFFSET_IB_BYTE1 },
+        { "EMC_TRAINING_RW_OFFSET_IB_BYTE2", EMC_TRAINING_RW_OFFSET_IB_BYTE2 },
+        { "EMC_TRAINING_RW_OFFSET_IB_BYTE3", EMC_TRAINING_RW_OFFSET_IB_BYTE3 },
+        { "EMC_TRAINING_RW_OFFSET_IB_MISC", EMC_TRAINING_RW_OFFSET_IB_MISC },
+        { "EMC_TRAINING_RW_OFFSET_OB_BYTE0", EMC_TRAINING_RW_OFFSET_OB_BYTE0 },
+        { "EMC_TRAINING_RW_OFFSET_OB_BYTE1", EMC_TRAINING_RW_OFFSET_OB_BYTE1 },
+        { "EMC_TRAINING_RW_OFFSET_OB_BYTE2", EMC_TRAINING_RW_OFFSET_OB_BYTE2 },
+        { "EMC_TRAINING_RW_OFFSET_OB_BYTE3", EMC_TRAINING_RW_OFFSET_OB_BYTE3 },
+        { "EMC_TRAINING_RW_OFFSET_OB_MISC", EMC_TRAINING_RW_OFFSET_OB_MISC },
+        { "EMC_TRAINING_OPT_CA_VREF", EMC_TRAINING_OPT_CA_VREF },
+        { "EMC_TRAINING_OPT_DQ_OB_VREF", EMC_TRAINING_OPT_DQ_OB_VREF },
+        { "EMC_TRAINING_QUSE_VREF_CTRL", EMC_TRAINING_QUSE_VREF_CTRL },
+        { "EMC_TRAINING_OPT_DQS_IB_VREF_RANK0", EMC_TRAINING_OPT_DQS_IB_VREF_RANK0 },
+        { "EMC_TRAINING_OPT_DQS_IB_VREF_RANK1", EMC_TRAINING_OPT_DQS_IB_VREF_RANK1 },
     };
 
     constexpr inline size_t EmcTableSize = std::size(emcTable);
