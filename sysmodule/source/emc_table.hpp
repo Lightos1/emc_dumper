@@ -1061,8 +1061,8 @@ namespace dumper::reg {
     };
 
     constexpr inline size_t EmcTableSize = std::size(emcTable);
-    constexpr u32 emc0Base = 0x7001b000;
-    constexpr u32 emc1Base = 0x7001e000;
-    constexpr u32 emc2Base = 0x7001f000;
+    constexpr u32 Emc0Base = 0x7001b000;
+    constexpr u32 Emc1Base = 0x7001e000;
+    constexpr u32 Emc2Base = 0x7001f000;
 
 }

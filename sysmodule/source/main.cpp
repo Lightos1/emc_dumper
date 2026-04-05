@@ -88,7 +88,7 @@ int main(int argc, char *argv[]) {
         FILE *pcvFile = fopen(FLAG_FILE_PCV, "r");
         if (emcFile) {
             fclose(emcFile);
-            dumper::reg::initializeRegisterTable(&emc, reg::emc0Base, reg::emcTable, reg::EmcTableSize, std::string(fs::ConfigPath) + "emc.txt");
+            dumper::reg::initializeRegisterTable(&emc, reg::Emc0Base, reg::emcTable, reg::EmcTableSize, std::string(fs::ConfigPath) + "emc.txt");
             reg::initializeRegisterTable(&mc, reg::mc0Base, reg::mcTable, reg::McTableSize, std::string(fs::ConfigPath) + "mc.txt");
 
             reg::dumpRegisters(&emc);
@@ -98,7 +98,7 @@ int main(int argc, char *argv[]) {
 
         if (pcvFile) {
             fclose(pcvFile);
-            sys::dumpSysmodule(dumper::sys::Pcv);
+            sys::dumpSysmodule(sys::Pcv);
             remove(FLAG_FILE_PCV);
         }
 
